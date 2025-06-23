@@ -3,11 +3,16 @@ class Player {
     constructor() {
         this.width = 30;
         this.height = 30;
-        this.speed = 5;
-        this.jumpPower = 12;
-        this.gravity = 0.5;
-        this.friction = 0.8;
+        this.speed = 8;        // Restored original speed
+        this.jumpPower = 15;   // Restored original jump power
+        this.gravity = 0.8;    // Restored original gravity
+        this.friction = 0.85;  // Restored original friction
         this.color = '#e74c3c';
+        
+        // Death and respawn mechanics
+        this.isDead = false;
+        this.deathTime = 0;
+        this.respawnDelay = 1500; // 1.5 seconds
         
         this.reset();
     }
@@ -18,6 +23,8 @@ class Player {
         this.velocityX = 0;
         this.velocityY = 0;
         this.onGround = false;
+        this.isDead = false;
+        this.deathTime = 0;
     }
 
     setPosition(x, y) {
@@ -26,10 +33,29 @@ class Player {
         this.velocityX = 0;
         this.velocityY = 0;
         this.onGround = false;
+        this.isDead = false;
+        this.deathTime = 0;
+    }
+
+    die() {
+        if (this.isDead) return; // Already dead
+        
+        this.isDead = true;
+        this.deathTime = Date.now();
+        this.velocityX = 0;
+        this.velocityY = 0;
+        
+        console.log('Player died!');
     }
 
     update(canvas) {
         if (gameStateManager.currentState !== 'playing') return;
+
+        // Handle death state
+        if (this.isDead) {
+            this.updateDeath();
+            return;
+        }
 
         this.handleInput();
         this.applyPhysics();
@@ -37,6 +63,21 @@ class Player {
         this.constrainToScreen(canvas);
         this.checkFallReset();
         this.checkGoalReached();
+    }
+
+    updateDeath() {
+        // Check if it's time to respawn
+        if (Date.now() - this.deathTime > this.respawnDelay) {
+            this.respawn();
+        }
+    }
+
+    respawn() {
+        const level = levelManager.getCurrentLevel();
+        if (level) {
+            this.setPosition(level.playerStart.x, level.playerStart.y);
+            console.log('Player respawned!');
+        }
     }
 
     handleInput() {
@@ -116,10 +157,8 @@ class Player {
     checkFallReset() {
         const canvas = document.getElementById('gameCanvas');
         if (this.y > canvas.height) {
-            const level = levelManager.getCurrentLevel();
-            if (level) {
-                this.setPosition(level.playerStart.x, level.playerStart.y);
-            }
+            // Falling off screen counts as death
+            this.die();
         }
     }
 
@@ -134,8 +173,21 @@ class Player {
     }
 
     render(ctx) {
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        if (this.isDead) {
+            // Render death effect - make player flash/fade
+            const timeSinceDeath = Date.now() - this.deathTime;
+            const flashRate = 200; // Flash every 200ms
+            const shouldShow = Math.floor(timeSinceDeath / flashRate) % 2 === 0;
+            
+            if (shouldShow) {
+                ctx.fillStyle = '#c0392b'; // Darker red when dead
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+        } else {
+            // Normal render
+            ctx.fillStyle = this.color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
     }
 }
 
