@@ -9,8 +9,18 @@ const LEVELS = [
             {x: 550, y: 270, width: 150, height: 20, type: "platform"},
             {x: 750, y: 350, width: 50, height: 50, type: "ground"}
         ],
-        enemies: [
-            // Future: {x: 400, y: 290, type: "goomba", direction: 1}
+        mobs: [
+            // Cannoneer on the right side that shoots towards player spawn
+            {
+                x: 650, 
+                y: 280, 
+                type: "cannoneer", 
+                config: {
+                    direction: -1,    // Shoots left
+                    fireRate: 3000,   // Fire every 3 seconds
+                    range: 600        // Can see player from this distance
+                }
+            }
         ],
         collectibles: [
             // Future: {x: 375, y: 280, type: "coin", value: 100}
@@ -32,7 +42,29 @@ const LEVELS = [
             {x: 550, y: 250, width: 100, height: 20, type: "platform"},
             {x: 700, y: 300, width: 100, height: 20, type: "ground"}
         ],
-        enemies: [],
+        mobs: [
+            // Two cannoneers for increased difficulty
+            {
+                x: 480, 
+                y: 220, 
+                type: "cannoneer", 
+                config: {
+                    direction: -1,    
+                    fireRate: 2500,   
+                    range: 400        
+                }
+            },
+            {
+                x: 620, 
+                y: 270, 
+                type: "cannoneer", 
+                config: {
+                    direction: -1,    
+                    fireRate: 2800,   // Slightly different timing
+                    range: 500        
+                }
+            }
+        ],
         collectibles: [],
         goal: {x: 730, y: 270, width: 30, height: 30},
         playerStart: {x: 30, y: 300},
@@ -51,7 +83,39 @@ const LEVELS = [
             {x: 450, y: 200, width: 100, height: 20, type: "platform"},
             {x: 650, y: 280, width: 150, height: 20, type: "ground"}
         ],
-        enemies: [],
+        mobs: [
+            // Multiple cannoneers creating a gauntlet
+            {
+                x: 380, 
+                y: 290, 
+                type: "cannoneer", 
+                config: {
+                    direction: -1,    
+                    fireRate: 2000,   // Faster firing
+                    range: 350        
+                }
+            },
+            {
+                x: 550, 
+                y: 170, 
+                type: "cannoneer", 
+                config: {
+                    direction: -1,    
+                    fireRate: 2200,   
+                    range: 400        
+                }
+            },
+            {
+                x: 720, 
+                y: 250, 
+                type: "cannoneer", 
+                config: {
+                    direction: -1,    
+                    fireRate: 1800,   // Even faster
+                    range: 500        
+                }
+            }
+        ],
         collectibles: [],
         goal: {x: 700, y: 250, width: 30, height: 30},
         playerStart: {x: 30, y: 300},
