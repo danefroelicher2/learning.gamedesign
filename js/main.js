@@ -63,6 +63,9 @@ class Game {
         
         // Update player (only during gameplay)
         player.update(this.canvas);
+        
+        // Update level manager (includes mobs and projectiles)
+        levelManager.update(deltaTime);
     }
 
     render() {
