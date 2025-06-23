@@ -3,6 +3,7 @@ class LevelManager {
     constructor() {
         this.currentLevelIndex = 0;
         this.currentLevel = null;
+        this.mobs = []; // Track active mobs
     }
 
     startLevel(levelIndex) {
@@ -13,6 +14,12 @@ class LevelManager {
 
         this.currentLevelIndex = levelIndex;
         this.currentLevel = LEVELS[levelIndex];
+        
+        // Clear any existing projectiles
+        projectileManager.clearAll();
+        
+        // Initialize mobs for this level
+        this.initializeMobs();
         
         // Reset player to level start position
         player.setPosition(
@@ -29,6 +36,20 @@ class LevelManager {
         console.log(`Starting ${this.currentLevel.name}`);
     }
 
+    initializeMobs() {
+        this.mobs = [];
+        
+        if (!this.currentLevel.mobs) return;
+        
+        // Create mob instances from level data
+        for (let mobData of this.currentLevel.mobs) {
+            const mob = new Mob(mobData.x, mobData.y, mobData.type, mobData.config || {});
+            this.mobs.push(mob);
+        }
+        
+        console.log(`Initialized ${this.mobs.length} mobs`);
+    }
+
     getCurrentLevel() {
         return this.currentLevel;
     }
@@ -40,7 +61,19 @@ class LevelManager {
         
         if (levelDisplay) levelDisplay.textContent = this.currentLevel.id;
         if (gameInfo) gameInfo.textContent = `Level: ${this.currentLevel.id} - ${this.currentLevel.name}`;
-        if (controls) controls.textContent = 'Use WASD or Arrow Keys to move and jump';
+        if (controls) controls.textContent = 'Use WASD or Arrow Keys to move and jump. Avoid the fireballs!';
+    }
+
+    update(deltaTime) {
+        if (gameStateManager.currentState !== 'playing') return;
+        
+        // Update mobs
+        for (let mob of this.mobs) {
+            mob.update(deltaTime);
+        }
+        
+        // Update projectiles
+        projectileManager.update();
     }
 
     render(ctx, canvas) {
@@ -49,8 +82,9 @@ class LevelManager {
         this.drawBackground(ctx, canvas);
         this.drawPlatforms(ctx);
         this.drawGoal(ctx);
+        this.drawMobs(ctx);
+        this.drawProjectiles(ctx);
         
-        // Future: this.drawEnemies(ctx);
         // Future: this.drawCollectibles(ctx);
     }
 
@@ -96,14 +130,17 @@ class LevelManager {
         ctx.fillRect(goal.x + goal.width/2 - 6, goal.y + goal.height + 16, 12, 4);
     }
 
-    // Future expansion methods
-    drawEnemies(ctx) {
-        // Will implement when we add enemies
-        for (let enemy of this.currentLevel.enemies) {
-            // Draw enemy based on type
+    drawMobs(ctx) {
+        for (let mob of this.mobs) {
+            mob.render(ctx);
         }
     }
 
+    drawProjectiles(ctx) {
+        projectileManager.render(ctx);
+    }
+
+    // Future expansion methods
     drawCollectibles(ctx) {
         // Will implement when we add coins, power-ups, etc.
         for (let collectible of this.currentLevel.collectibles) {
