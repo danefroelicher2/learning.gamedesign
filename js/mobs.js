@@ -17,6 +17,9 @@ class Mob {
       case "ironGiant":
         this.initIronGiant(config);
         break;
+      case "spikeRoller":
+        this.initSpikeRoller(config);
+        break;
     }
 
     console.log("Mob created successfully:", this);
@@ -68,6 +71,30 @@ class Mob {
     );
   }
 
+  initSpikeRoller(config) {
+    this.width = 30;
+    this.height = 30;
+    this.speed = config.speed || 3;
+    this.direction = config.direction || 1; // 1 for right, -1 for left
+
+    // Platform boundaries for movement
+    this.platformStart = config.platformStart || this.x;
+    this.platformEnd = config.platformEnd || this.x + 150;
+
+    // Visual properties
+    this.color = "#8e44ad"; // Purple base
+    this.spikeColor = "#2c3e50"; // Dark spikes
+    this.glowColor = "#9b59b6"; // Purple glow
+
+    // Animation
+    this.rotationAngle = 0;
+    this.rotationSpeed = 0.2;
+
+    console.log(
+      `Spike Roller created: speed=${this.speed}, platform=${this.platformStart}-${this.platformEnd}`
+    );
+  }
+
   update(deltaTime) {
     if (!this.active) return;
 
@@ -77,6 +104,9 @@ class Mob {
         break;
       case "ironGiant":
         this.updateIronGiant(deltaTime);
+        break;
+      case "spikeRoller":
+        this.updateSpikeRoller(deltaTime);
         break;
     }
   }
@@ -117,6 +147,25 @@ class Mob {
         this.fireProjectile();
         this.lastAttackTime = now;
       }
+    }
+  }
+
+  updateSpikeRoller(deltaTime) {
+    // Move back and forth on platform
+    this.x += this.speed * this.direction;
+
+    // Check platform bounds and reverse direction
+    if (
+      this.x <= this.platformStart ||
+      this.x + this.width >= this.platformEnd
+    ) {
+      this.direction *= -1;
+    }
+
+    // Update rotation for visual effect
+    this.rotationAngle += this.rotationSpeed;
+    if (this.rotationAngle > Math.PI * 2) {
+      this.rotationAngle = 0;
     }
   }
 
@@ -220,6 +269,9 @@ class Mob {
       case "ironGiant":
         this.renderIronGiant(ctx);
         break;
+      case "spikeRoller":
+        this.renderSpikeRoller(ctx);
+        break;
     }
   }
 
@@ -281,6 +333,50 @@ class Mob {
     ctx.textAlign = "center";
     ctx.fillStyle = "#e74c3c";
     ctx.fillText("IRON GIANT", this.x + this.width / 2, this.y - 20);
+    ctx.textAlign = "left";
+  }
+
+  renderSpikeRoller(ctx) {
+    const centerX = this.x + this.width / 2;
+    const centerY = this.y + this.height / 2;
+
+    // Draw glowing aura
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, this.width / 2 + 5, 0, Math.PI * 2);
+    ctx.fillStyle = this.glowColor + "30"; // Semi-transparent glow
+    ctx.fill();
+
+    // Draw main body (rotating)
+    ctx.save();
+    ctx.translate(centerX, centerY);
+    ctx.rotate(this.rotationAngle);
+
+    // Main body
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(0, 0, this.width / 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Draw spikes radiating from center
+    ctx.fillStyle = this.spikeColor;
+    for (let i = 0; i < 8; i++) {
+      const angle = ((Math.PI * 2) / 8) * i;
+      const spikeLength = 12;
+      const spikeWidth = 3;
+
+      ctx.save();
+      ctx.rotate(angle);
+      ctx.fillRect(-spikeWidth / 2, -this.width / 2, spikeWidth, -spikeLength);
+      ctx.restore();
+    }
+
+    ctx.restore();
+
+    // Draw warning label
+    ctx.fillStyle = "#e74c3c";
+    ctx.font = "bold 10px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("⚠️", centerX, this.y - 5);
     ctx.textAlign = "left";
   }
 
@@ -393,7 +489,8 @@ class Projectile {
       this.active = false;
     }
 
-    if (this.x < -200 || this.x > 5000) {
+    if (this.x < -200 || this.x > 12000) {
+      // Increased for larger map
       this.active = false;
     }
   }
