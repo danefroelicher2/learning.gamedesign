@@ -29,8 +29,12 @@ class Game {
     // Set up rendering context
     this.ctx.imageSmoothingEnabled = false; // Pixel-perfect rendering
 
-    // Update camera with new canvas size
-    camera.canvas = this.canvas;
+    // Create and setup camera with proper canvas reference
+    if (typeof camera !== "undefined") {
+      camera.canvas = this.canvas;
+      camera.offsetX = this.canvas.width / 2; // Center player horizontally
+      camera.offsetY = this.canvas.height / 2; // Center player vertically
+    }
   }
 
   setupResizeHandler() {
@@ -38,7 +42,11 @@ class Game {
     window.addEventListener("resize", () => {
       this.resizeCanvas();
       // Update camera with new size
-      camera.canvas = this.canvas;
+      if (typeof camera !== "undefined") {
+        camera.canvas = this.canvas;
+        camera.offsetX = this.canvas.width / 2; // Keep player centered
+        camera.offsetY = this.canvas.height / 2; // Keep player centered
+      }
     });
   }
 

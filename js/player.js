@@ -258,9 +258,9 @@ checkCannoneerCollisions() {
         // The camera system will manage the right boundary
     }
 
-    checkFallReset() {
-        // Falling off screen counts as death
-        if (this.y > 600) { // Increased threshold for larger levels
+   checkFallReset() {
+        // Only kill player if they fall WAY off the level (much more lenient for deep descent)
+        if (this.y > 1200) { // Increased from 600 to 1200 to allow deep descent
             this.die();
         }
     }

@@ -73,12 +73,12 @@ class LevelManager {
 
     // Find the rightmost and bottommost points in the level
     let maxX = 800; // Minimum level width
-    let maxY = 400; // Default height
+    let maxY = 1200; // Increased for deep descent (was 400)
 
-    // Check platforms
+    // Check platforms for both width and height
     for (let platform of this.currentLevel.platforms) {
-      maxX = Math.max(maxX, platform.x + platform.width + 100); // Add padding
-      maxY = Math.max(maxY, platform.y + platform.height);
+      maxX = Math.max(maxX, platform.x + platform.width + 100);
+      maxY = Math.max(maxY, platform.y + platform.height + 100); // Include deep platforms
     }
 
     // Check goal
@@ -89,7 +89,7 @@ class LevelManager {
       );
     }
 
-    // Set camera bounds
+    // Set camera bounds to allow deep descent
     camera.setLevelBounds(maxX, maxY);
 
     console.log(`Level bounds set: width=${maxX}, height=${maxY}`);
@@ -178,17 +178,19 @@ class LevelManager {
     this.drawGoal(ctx);
     this.drawMobs(ctx);
     this.drawProjectiles(ctx);
-    this.drawBossArenaIndicators(ctx, canvas); // Pass canvas for screen width
+    this.drawBossArenaIndicators(ctx, canvas);
   }
 
   drawBackground(ctx, canvas) {
     const bg = this.currentLevel.background;
 
-    // Calculate the actual level width from platforms and goal
-    let levelWidth = canvas.width; // Use full canvas width as minimum
+    // Calculate the actual level dimensions from platforms and goal
+    let levelWidth = canvas.width;
+    let levelHeight = 1200; // Minimum height for deep levels
 
     for (let platform of this.currentLevel.platforms) {
       levelWidth = Math.max(levelWidth, platform.x + platform.width);
+      levelHeight = Math.max(levelHeight, platform.y + platform.height);
     }
 
     if (this.currentLevel.goal) {
@@ -200,15 +202,16 @@ class LevelManager {
 
     // Add extra padding to ensure full coverage
     levelWidth += 200;
+    levelHeight += 200;
 
-    // Create gradient that spans the entire level
-    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    // Create gradient that spans the entire level (including deep areas)
+    const gradient = ctx.createLinearGradient(0, 0, 0, levelHeight);
     gradient.addColorStop(0, bg.color1);
     gradient.addColorStop(1, bg.color2);
     ctx.fillStyle = gradient;
 
-    // Draw background across the entire level width
-    ctx.fillRect(0, 0, levelWidth, canvas.height);
+    // Draw background across the entire level dimensions
+    ctx.fillRect(0, 0, levelWidth, levelHeight);
   }
 
   drawPlatforms(ctx) {
