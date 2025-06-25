@@ -1,4 +1,4 @@
-// Level 1: The Pound - Deep Pit Descent Below Screen Level
+// Level 1: The Pound - Descent Directly to Spike Area and Boss Arena
 const LEVEL_1 = {
     id: 1,
     name: "Level 1 - The Pound",
@@ -19,7 +19,7 @@ const LEVEL_1 = {
         // SECTION 4: Landing platform after the 3 jumps (SHORTENED FOR BREATHER)
         {x: 1540, y: 350, width: 80, height: 20, type: "platform"},   // Player is here at y: 350
         
-        // SECTION 5: DEEP PIT DESCENT (Going WAY below screen level with DOUBLED platforms)
+        // SECTION 5: DEEP PIT DESCENT (Going WAY below screen level)
         {x: 1700, y: 420, width: 100, height: 20, type: "platform"},   // Platform 1: 70px down
         {x: 1850, y: 490, width: 100, height: 20, type: "platform"},   // Platform 2: 70px down
         {x: 2000, y: 560, width: 100, height: 20, type: "platform"},   // Platform 3: 70px down
@@ -31,40 +31,22 @@ const LEVEL_1 = {
         {x: 2900, y: 980, width: 100, height: 20, type: "platform"},   // Platform 9: 70px down (deepest pit)
         {x: 3050, y: 1050, width: 100, height: 20, type: "platform"},  // Platform 10: 70px down (bottom of pit)
         
-        // SECTION 6: Bridge platform back up to normal level (BIG jump back up)
-        {x: 3300, y: 350, width: 200, height: 20, type: "platform"},
+        // SECTION 6: SPIKE ROLLER CHALLENGE AREA (Immediately after descent)
+        {x: 3250, y: 1050, width: 200, height: 30, type: "ground"},    // Entry platform (same level as descent end)
+        {x: 3550, y: 1000, width: 150, height: 20, type: "platform"},  // Spike platform 1
+        {x: 3800, y: 950, width: 150, height: 20, type: "platform"},   // Spike platform 2
+        {x: 4050, y: 900, width: 150, height: 20, type: "platform"},   // Spike platform 3 
+        {x: 4300, y: 1000, width: 150, height: 20, type: "platform"},  // Spike platform 4 (down again)
+        {x: 4550, y: 1050, width: 200, height: 30, type: "ground"},    // Exit spike area
         
-        // SECTION 7: Extended running section
-        {x: 3600, y: 370, width: 600, height: 30, type: "ground"},
+        // SECTION 7: Transition to Boss Arena
+        {x: 4850, y: 1050, width: 300, height: 30, type: "ground"},    // Bridge to boss
         
-        // SECTION 8: SPIKE ROLLER CHALLENGE AREA
-        // Multi-level platform section with moving spike rollers
-        {x: 4300, y: 370, width: 200, height: 30, type: "ground"},    // Entry platform
-        {x: 4600, y: 320, width: 150, height: 20, type: "platform"},  // Lower platform
-        {x: 4850, y: 270, width: 150, height: 20, type: "platform"},  // Middle platform  
-        {x: 5100, y: 220, width: 150, height: 20, type: "platform"},  // Upper platform
-        {x: 5350, y: 320, width: 150, height: 20, type: "platform"},  // Down again
-        {x: 5600, y: 370, width: 200, height: 30, type: "ground"},    // Exit platform
+        // SECTION 8: BOSS ARENA (Deep underground level)
+        {x: 5250, y: 1050, width: 1200, height: 30, type: "ground"},   // Boss arena floor (deep level)
         
-        // SECTION 9: Another long running section
-        {x: 5900, y: 370, width: 1000, height: 30, type: "ground"},
-        
-        // SECTION 10: Elevated jumping section
-        {x: 7000, y: 320, width: 100, height: 20, type: "platform"},
-        {x: 7200, y: 280, width: 100, height: 20, type: "platform"},
-        {x: 7400, y: 240, width: 100, height: 20, type: "platform"},
-        {x: 7600, y: 280, width: 100, height: 20, type: "platform"},
-        {x: 7800, y: 320, width: 100, height: 20, type: "platform"},
-        {x: 8000, y: 370, width: 300, height: 30, type: "ground"},
-        
-        // SECTION 11: Final approach to boss (massive running section)
-        {x: 8400, y: 370, width: 2000, height: 30, type: "ground"},
-        
-        // SECTION 12: Boss Arena (moved much further right)
-        {x: 10500, y: 370, width: 1200, height: 30, type: "ground"},
-        
-        // SECTION 13: Final stretch to flag (after boss defeat)
-        {x: 11800, y: 370, width: 400, height: 30, type: "ground"}
+        // SECTION 9: Final stretch to flag (after boss defeat)
+        {x: 6550, y: 1050, width: 400, height: 30, type: "ground"}     // Goal area (same deep level)
     ],
     mobs: [
         // SECTION 3: Original cannoneers (ascending section)
@@ -189,57 +171,56 @@ const LEVEL_1 = {
             }
         },
         
-        // SECTION 8: SPIKE ROLLER MOBS - Moving deadly obstacles
+        // SECTION 6: SPIKE ROLLER MOBS (Immediately after descent)
         {
-            x: 4600,
-            y: 290,  // On the lower platform
+            x: 3550,
+            y: 970,   // On spike platform 1
             type: "spikeRoller",
             config: {
-                platformStart: 4600,
-                platformEnd: 4750,
+                platformStart: 3550,
+                platformEnd: 3700,
                 speed: 3,
                 direction: 1
             }
         },
         {
-            x: 5100,
-            y: 190,  // On the upper platform  
+            x: 3800,
+            y: 920,   // On spike platform 2
             type: "spikeRoller",
             config: {
-                platformStart: 5100,
-                platformEnd: 5250,
+                platformStart: 3800,
+                platformEnd: 3950,
                 speed: 2.5,
                 direction: -1
             }
         },
         {
-            x: 5350,
-            y: 290,  // On the exit platform
-            type: "spikeRoller", 
+            x: 4050,
+            y: 870,   // On spike platform 3
+            type: "spikeRoller",
             config: {
-                platformStart: 5350,
-                platformEnd: 5500,
+                platformStart: 4050,
+                platformEnd: 4200,
                 speed: 3.5,
                 direction: 1
             }
         },
-        
-        // SECTION 10: Additional cannoneer in the elevated section
         {
-            x: 7500,
-            y: 210,
-            type: "cannoneer",
+            x: 4300,
+            y: 970,   // On spike platform 4
+            type: "spikeRoller",
             config: {
-                direction: -1,
-                fireRate: 2200,
-                range: 500
+                platformStart: 4300,
+                platformEnd: 4450,
+                speed: 3,
+                direction: -1
             }
         },
         
-        // SECTION 12: BOSS MOB - Iron Giant (moved much further right)
+        // SECTION 8: BOSS MOB - Iron Giant (Deep underground boss arena)
         {
-            x: 11100,
-            y: 320,
+            x: 5800,
+            y: 1000,  // In the deep boss arena
             type: "ironGiant",
             config: {
                 health: 3,           
@@ -250,13 +231,13 @@ const LEVEL_1 = {
         }
     ],
     collectibles: [],
-    goal: {x: 12150, y: 340, width: 30, height: 30},  // Much further right after expanded map
+    goal: {x: 6900, y: 1020, width: 30, height: 30},  // Goal at deep level after boss
     playerStart: {x: 50, y: 300},
     bossArena: {
-        x: 10500,          // Arena start (moved much further right)
+        x: 5250,           // Boss arena start (deep underground)
         width: 1200,       // Large width to cover full screen
-        respawnX: 10600,   // Respawn inside the arena 
-        respawnY: 300,     // Respawn Y position
+        respawnX: 5350,    // Respawn inside the deep arena 
+        respawnY: 1000,    // Respawn Y position (deep level)
         triggered: false
     },
     background: {
