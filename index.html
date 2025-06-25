@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Platformer Game</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
     <div class="ui">
-        <div id="gameInfo">World Map</div>
-        <div id="controls">Use A/D to move, Enter/Space to enter level</div>
+      <div id="gameInfo">World Map</div>
+      <div id="controls">Use A/D to move, Enter/Space to enter level</div>
     </div>
     <canvas id="gameCanvas" width="800" height="400"></canvas>
 
-    <!-- Load scripts in dependency order -->
+    <!-- Load individual level files first -->
+    <script src="data/level1.js"></script>
+    <script src="data/level2.js"></script>
+    <script src="data/level3.js"></script>
+    <!-- Then load the combined levels file -->
     <script src="data/levels.js"></script>
+
+    <!-- Load other scripts in dependency order -->
+    <script src="js/camera.js"></script>
     <script src="js/input.js"></script>
     <script src="js/mobs.js"></script>
     <script src="js/player.js"></script>
@@ -22,5 +29,5 @@
     <script src="js/worldMap.js"></script>
     <script src="js/gameStates.js"></script>
     <script src="js/main.js"></script>
-</body>
+  </body>
 </html>
