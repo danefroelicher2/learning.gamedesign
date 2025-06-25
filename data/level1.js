@@ -1,4 +1,4 @@
-// Level 1: The Pound - Expanded with Continuous Flat Surface
+// Level 1: The Pound - Expanded with Full Screen Boss Arena
 const LEVEL_1 = {
   id: 1,
   name: "Level 1 - The Pound",
@@ -63,7 +63,7 @@ const LEVEL_1 = {
       type: "ironGiant",
       config: {
         health: 3, // Takes 3 jumps to defeat
-        patrolDistance: 300, // Moves back and forth
+        patrolDistance: 600, // Larger patrol area for full screen
         attackRate: 1500, // Faster attacks than cannoneers
         isBoss: true,
       },
@@ -73,9 +73,9 @@ const LEVEL_1 = {
   goal: { x: 4250, y: 340, width: 30, height: 30 }, // At the end of the continuous platform
   playerStart: { x: 50, y: 300 },
   bossArena: {
-    x: 3000, // Arena start
-    width: 800, // Arena width
-    respawnX: 3050, // Where to respawn if player dies in boss fight
+    x: 3000, // Arena start - this will be dynamically adjusted to screen width
+    width: 1200, // Much larger width to cover full screen
+    respawnX: 3100, // Respawn inside the arena (not at level start)
     respawnY: 300, // Respawn Y position
     triggered: false,
   },

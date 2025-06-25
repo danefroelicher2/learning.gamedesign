@@ -145,7 +145,7 @@ class LevelManager {
       // Mark as triggered
       this.currentLevel.bossArena.triggered = true;
 
-      // Lock camera to boss arena
+      // Lock camera to boss arena - make it full screen width
       camera.lockToBossArena(arena.x, arena.width);
 
       // Update UI for boss fight
@@ -178,7 +178,7 @@ class LevelManager {
     this.drawGoal(ctx);
     this.drawMobs(ctx);
     this.drawProjectiles(ctx);
-    this.drawBossArenaIndicators(ctx); // Changed from drawBossArenaWalls
+    this.drawBossArenaIndicators(ctx, canvas); // Pass canvas for screen width
   }
 
   drawBackground(ctx, canvas) {
@@ -231,8 +231,8 @@ class LevelManager {
     }
   }
 
-  drawBossArenaIndicators(ctx) {
-    // Draw subtle boss arena indicators if triggered (no walls!)
+  drawBossArenaIndicators(ctx, canvas) {
+    // Only draw boss arena label - NO RED BARS
     if (
       this.currentLevel.bossArena &&
       this.currentLevel.bossArena.triggered &&
@@ -240,20 +240,11 @@ class LevelManager {
     ) {
       const arena = this.currentLevel.bossArena;
 
-      // Draw subtle boundary indicators on the ground only
-      ctx.fillStyle = "#e74c3c"; // Red indicators
-
-      // Left boundary marker (small ground indicator)
-      ctx.fillRect(arena.x - 5, 360, 5, 20);
-
-      // Right boundary marker (small ground indicator)
-      ctx.fillRect(arena.x + arena.width, 360, 5, 20);
-
-      // Boss arena label in the sky
+      // Only show boss arena label in the sky - no boundary markers
       ctx.fillStyle = "#e74c3c";
       ctx.font = "bold 24px Arial";
       ctx.textAlign = "center";
-      ctx.fillText("⚔️ BOSS ARENA ⚔️", arena.x + arena.width / 2, 100);
+      ctx.fillText("⚔️ BOSS ARENA ⚔️", canvas.width / 2, 100); // Center of screen
       ctx.textAlign = "left";
     }
   }
