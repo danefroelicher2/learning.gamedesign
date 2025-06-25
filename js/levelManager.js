@@ -15,6 +15,8 @@ class LevelManager {
     this.currentLevelIndex = levelIndex;
     this.currentLevel = LEVELS[levelIndex];
 
+    console.log("Starting level:", this.currentLevel);
+
     // Clear any existing projectiles
     projectileManager.clearAll();
 
@@ -42,10 +44,16 @@ class LevelManager {
   initializeMobs() {
     this.mobs = [];
 
-    if (!this.currentLevel.mobs) return;
+    console.log("Current level mobs:", this.currentLevel.mobs);
+
+    if (!this.currentLevel || !this.currentLevel.mobs) {
+      console.log("No mobs defined for this level");
+      return;
+    }
 
     // Create mob instances from level data
     for (let mobData of this.currentLevel.mobs) {
+      console.log("Creating mob with data:", mobData);
       const mob = new Mob(
         mobData.x,
         mobData.y,
@@ -55,19 +63,19 @@ class LevelManager {
       this.mobs.push(mob);
     }
 
-    console.log(`Initialized ${this.mobs.length} mobs`);
+    console.log(`Successfully initialized ${this.mobs.length} mobs`);
   }
 
   calculateLevelBounds() {
     if (!this.currentLevel) return;
 
     // Find the rightmost and bottommost points in the level
-    let maxX = 0;
+    let maxX = 800; // Minimum level width
     let maxY = 400; // Default height
 
     // Check platforms
     for (let platform of this.currentLevel.platforms) {
-      maxX = Math.max(maxX, platform.x + platform.width);
+      maxX = Math.max(maxX, platform.x + platform.width + 100); // Add padding
       maxY = Math.max(maxY, platform.y + platform.height);
     }
 
@@ -75,7 +83,7 @@ class LevelManager {
     if (this.currentLevel.goal) {
       maxX = Math.max(
         maxX,
-        this.currentLevel.goal.x + this.currentLevel.goal.width
+        this.currentLevel.goal.x + this.currentLevel.goal.width + 100
       );
     }
 
@@ -110,7 +118,9 @@ class LevelManager {
 
     // Update mobs
     for (let mob of this.mobs) {
-      mob.update(deltaTime);
+      if (mob && mob.update) {
+        mob.update(deltaTime);
+      }
     }
 
     // Update projectiles
@@ -125,17 +135,36 @@ class LevelManager {
     this.drawGoal(ctx);
     this.drawMobs(ctx);
     this.drawProjectiles(ctx);
-
-    // Future: this.drawCollectibles(ctx);
   }
 
   drawBackground(ctx, canvas) {
     const bg = this.currentLevel.background;
+
+    // Calculate the actual level width from platforms and goal
+    let levelWidth = 800; // Minimum width
+
+    for (let platform of this.currentLevel.platforms) {
+      levelWidth = Math.max(levelWidth, platform.x + platform.width);
+    }
+
+    if (this.currentLevel.goal) {
+      levelWidth = Math.max(
+        levelWidth,
+        this.currentLevel.goal.x + this.currentLevel.goal.width
+      );
+    }
+
+    // Add extra padding to ensure full coverage
+    levelWidth += 200;
+
+    // Create gradient that spans the entire level
     const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
     gradient.addColorStop(0, bg.color1);
     gradient.addColorStop(1, bg.color2);
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw background across the entire level width
+    ctx.fillRect(0, 0, levelWidth, canvas.height);
   }
 
   drawPlatforms(ctx) {
@@ -173,20 +202,14 @@ class LevelManager {
 
   drawMobs(ctx) {
     for (let mob of this.mobs) {
-      mob.render(ctx);
+      if (mob && mob.render) {
+        mob.render(ctx);
+      }
     }
   }
 
   drawProjectiles(ctx) {
     projectileManager.render(ctx);
-  }
-
-  // Future expansion methods
-  drawCollectibles(ctx) {
-    // Will implement when we add coins, power-ups, etc.
-    for (let collectible of this.currentLevel.collectibles) {
-      // Draw collectible based on type
-    }
   }
 }
 
