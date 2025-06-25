@@ -6,24 +6,26 @@ class DeathCounter {
   }
 
   createUI() {
-    // Create death counter display element
+    // Create the main game UI container
+    const gameUI = document.createElement("div");
+    gameUI.className = "game-ui";
+    gameUI.id = "gameUI";
+
+    // Create level header
+    const levelHeader = document.createElement("div");
+    levelHeader.id = "levelHeader";
+    levelHeader.textContent = "World Map";
+
+    // Create death counter display
     const deathDisplay = document.createElement("div");
     deathDisplay.id = "deathCounter";
-    deathDisplay.style.position = "absolute";
-    deathDisplay.style.top = "10px";
-    deathDisplay.style.left = "10px";
-    deathDisplay.style.color = "#e74c3c";
-    deathDisplay.style.fontSize = "18px";
-    deathDisplay.style.fontWeight = "bold";
-    deathDisplay.style.fontFamily = "Arial, sans-serif";
-    deathDisplay.style.zIndex = "20";
-    deathDisplay.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
-    deathDisplay.style.padding = "5px 10px";
-    deathDisplay.style.borderRadius = "5px";
-    deathDisplay.style.border = "2px solid #c0392b";
+
+    // Append to game UI container
+    gameUI.appendChild(levelHeader);
+    gameUI.appendChild(deathDisplay);
 
     // Add to page
-    document.body.appendChild(deathDisplay);
+    document.body.appendChild(gameUI);
 
     // Initialize display
     this.updateDisplay();
@@ -39,6 +41,13 @@ class DeathCounter {
     const deathDisplay = document.getElementById("deathCounter");
     if (deathDisplay) {
       deathDisplay.textContent = `💀 Deaths: ${this.deathCount}`;
+    }
+  }
+
+  updateLevelHeader(levelName) {
+    const levelHeader = document.getElementById("levelHeader");
+    if (levelHeader) {
+      levelHeader.textContent = levelName;
     }
   }
 

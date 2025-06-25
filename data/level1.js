@@ -1,7 +1,7 @@
-// Level 1: Getting Started - Expanded 3x with dual cannoneer challenge
+// Level 1: The Pound - Expanded 3x with dual cannoneer challenge
 const LEVEL_1 = {
   id: 1,
-  name: "Getting Started",
+  name: "Level 1 - The Pound",
   platforms: [
     // SECTION 1: Original starting area
     { x: 0, y: 370, width: 200, height: 30, type: "ground" },

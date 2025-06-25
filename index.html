@@ -7,11 +7,11 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <div class="ui">
-      <div id="gameInfo">World Map</div>
-      <div id="controls">Use A/D to move, Enter/Space to enter level</div>
-    </div>
-    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <!-- Fullscreen canvas -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- Controls info (positioned via CSS) -->
+    <div id="controls">WASD/Arrow Keys: Move & Jump</div>
 
     <!-- Load individual level files first -->
     <script src="data/level1.js"></script>
@@ -21,6 +21,7 @@
     <script src="data/levels.js"></script>
 
     <!-- Load other scripts in dependency order -->
+    <script src="js/deathCounter.js"></script>
     <script src="js/camera.js"></script>
     <script src="js/input.js"></script>
     <script src="js/mobs.js"></script>

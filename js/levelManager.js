@@ -98,16 +98,15 @@ class LevelManager {
   }
 
   updateUI() {
-    const levelDisplay = document.getElementById("levelDisplay");
-    const gameInfo = document.getElementById("gameInfo");
-    const controls = document.getElementById("controls");
+    // Update level header in top-left
+    deathCounter.updateLevelHeader(this.currentLevel.name);
 
-    if (levelDisplay) levelDisplay.textContent = this.currentLevel.id;
-    if (gameInfo)
-      gameInfo.textContent = `Level: ${this.currentLevel.id} - ${this.currentLevel.name}`;
-    if (controls)
+    // Update controls
+    const controls = document.getElementById("controls");
+    if (controls) {
       controls.textContent =
-        "Use WASD or Arrow Keys to move and jump. Avoid the fireballs!";
+        "WASD/Arrow Keys: Move & Jump | Avoid fireballs and cannoneers!";
+    }
   }
 
   update(deltaTime) {
@@ -141,7 +140,7 @@ class LevelManager {
     const bg = this.currentLevel.background;
 
     // Calculate the actual level width from platforms and goal
-    let levelWidth = 800; // Minimum width
+    let levelWidth = canvas.width; // Use full canvas width as minimum
 
     for (let platform of this.currentLevel.platforms) {
       levelWidth = Math.max(levelWidth, platform.x + platform.width);

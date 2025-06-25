@@ -45,6 +45,9 @@ class Player {
     this.velocityX = 0;
     this.velocityY = 0;
 
+    // Add to death counter
+    deathCounter.addDeath();
+
     console.log("Player died!");
   }
 
@@ -60,7 +63,8 @@ class Player {
     this.handleInput();
     this.applyPhysics();
     this.handleCollisions();
-    this.checkBounds(); // Changed from constrainToScreen
+    this.checkCannoneerCollisions(); // New: Check collision with cannoneer bodies
+    this.checkBounds();
     this.checkFallReset();
     this.checkGoalReached();
   }
@@ -116,6 +120,22 @@ class Player {
     for (let platform of currentLevel.platforms) {
       if (this.checkCollision(platform)) {
         this.resolveCollision(platform);
+      }
+    }
+  }
+
+  checkCannoneerCollisions() {
+    // Check collision with cannoneer bodies (instant death)
+    const mobs = levelManager.mobs;
+    if (!mobs) return;
+
+    for (let mob of mobs) {
+      if (mob.active && mob.type === "cannoneer") {
+        if (this.checkCollision(mob)) {
+          console.log("Player touched cannoneer body!");
+          this.die();
+          return; // Exit early since player is dead
+        }
       }
     }
   }
@@ -210,11 +230,6 @@ class Player {
       // Normal render
       ctx.fillStyle = this.color;
       ctx.fillRect(this.x, this.y, this.width, this.height);
-
-      // Debug: show player position
-      console.log(
-        `Player position: (${Math.round(this.x)}, ${Math.round(this.y)})`
-      );
     }
   }
 }
