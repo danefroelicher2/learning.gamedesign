@@ -1,282 +1,484 @@
 // Mob and projectile system
 class Mob {
-    constructor(x, y, type, config = {}) {
-        this.x = x;
-        this.y = y;
-        this.type = type;
-        this.active = true;
-        
-        console.log(`Creating ${type} mob at (${x}, ${y})`);
-        
-        // Type-specific initialization
-        switch(type) {
-            case 'cannoneer':
-                this.initCannoneer(config);
-                break;
-        }
-        
-        console.log('Mob created successfully:', this);
+  constructor(x, y, type, config = {}) {
+    this.x = x;
+    this.y = y;
+    this.type = type;
+    this.active = true;
+    this.startX = x; // Remember starting position
+
+    console.log(`Creating ${type} mob at (${x}, ${y})`);
+
+    // Type-specific initialization
+    switch (type) {
+      case "cannoneer":
+        this.initCannoneer(config);
+        break;
+      case "ironGiant":
+        this.initIronGiant(config);
+        break;
     }
 
-    initCannoneer(config) {
-        this.width = 40;
-        this.height = 30;
-        this.fireRate = config.fireRate || 2000;
-        this.lastFireTime = Date.now() - this.fireRate; // Allow immediate first shot
-        this.range = config.range || 400;
-        this.direction = config.direction || -1;
-        this.color = '#2c3e50';
-        this.barrelColor = '#34495e';
-        
-        console.log(`Cannoneer ready: fireRate=${this.fireRate}, range=${this.range}, direction=${this.direction}`);
+    console.log("Mob created successfully:", this);
+  }
+
+  initCannoneer(config) {
+    this.width = 40;
+    this.height = 30;
+    this.fireRate = config.fireRate || 2000;
+    this.lastFireTime = Date.now() - this.fireRate;
+    this.range = config.range || 400;
+    this.direction = config.direction || -1;
+    this.color = "#2c3e50";
+    this.barrelColor = "#34495e";
+
+    console.log(
+      `Cannoneer ready: fireRate=${this.fireRate}, range=${this.range}, direction=${this.direction}`
+    );
+  }
+
+  initIronGiant(config) {
+    this.width = 60;
+    this.height = 50;
+    this.health = config.health || 3;
+    this.maxHealth = this.health;
+    this.patrolDistance = config.patrolDistance || 300;
+    this.attackRate = config.attackRate || 1500;
+    this.lastAttackTime = Date.now() - this.attackRate;
+    this.isBoss = config.isBoss || false;
+
+    // Movement properties
+    this.speed = 2;
+    this.direction = 1; // 1 for right, -1 for left
+    this.patrolLeft = this.startX - this.patrolDistance / 2;
+    this.patrolRight = this.startX + this.patrolDistance / 2;
+
+    // Visual properties
+    this.color = "#34495e"; // Dark gray
+    this.accentColor = "#e74c3c"; // Red accents
+    this.eyeColor = "#f39c12"; // Orange eyes
+
+    // States
+    this.isStunned = false;
+    this.stunnedTime = 0;
+    this.stunnedDuration = 1000; // 1 second stun after being jumped on
+
+    console.log(
+      `Iron Giant boss created: health=${this.health}, patrol=${this.patrolDistance}`
+    );
+  }
+
+  update(deltaTime) {
+    if (!this.active) return;
+
+    switch (this.type) {
+      case "cannoneer":
+        this.updateCannoneer(deltaTime);
+        break;
+      case "ironGiant":
+        this.updateIronGiant(deltaTime);
+        break;
+    }
+  }
+
+  updateCannoneer(deltaTime) {
+    const now = Date.now();
+    const timeSinceLastFire = now - this.lastFireTime;
+
+    const canSee = this.canSeePlayer();
+
+    if (canSee && timeSinceLastFire >= this.fireRate) {
+      this.fireProjectile();
+      this.lastFireTime = now;
+    }
+  }
+
+  updateIronGiant(deltaTime) {
+    // Handle stun state
+    if (this.isStunned) {
+      if (Date.now() - this.stunnedTime > this.stunnedDuration) {
+        this.isStunned = false;
+      }
+      return; // Don't do anything while stunned
     }
 
-    update(deltaTime) {
-        if (!this.active) return;
+    // Patrol movement
+    this.x += this.speed * this.direction;
 
-        switch(this.type) {
-            case 'cannoneer':
-                this.updateCannoneer(deltaTime);
-                break;
-        }
+    // Check patrol bounds and reverse direction
+    if (this.x <= this.patrolLeft || this.x >= this.patrolRight) {
+      this.direction *= -1;
     }
 
-    updateCannoneer(deltaTime) {
-        const now = Date.now();
-        const timeSinceLastFire = now - this.lastFireTime;
-        
-        // Check if player is in range and line of sight
-        const canSee = this.canSeePlayer();
-        
-        if (canSee && timeSinceLastFire >= this.fireRate) {
-            console.log(`FIRING! Cannoneer at (${this.x}, ${this.y})`);
-            this.fireProjectile();
-            this.lastFireTime = now;
-        }
+    // Attack if player is in range
+    const now = Date.now();
+    if (now - this.lastAttackTime > this.attackRate) {
+      if (this.canSeePlayer()) {
+        this.fireProjectile();
+        this.lastAttackTime = now;
+      }
+    }
+  }
+
+  takeDamage() {
+    if (this.type !== "ironGiant") return false;
+
+    this.health--;
+    this.isStunned = true;
+    this.stunnedTime = Date.now();
+
+    console.log(
+      `Iron Giant took damage! Health: ${this.health}/${this.maxHealth}`
+    );
+
+    if (this.health <= 0) {
+      this.active = false;
+      console.log("Iron Giant defeated!");
+
+      // Trigger boss defeat
+      if (levelManager && levelManager.onBossDefeated) {
+        levelManager.onBossDefeated();
+      }
+
+      return true; // Boss defeated
     }
 
-    canSeePlayer() {
-        if (!player) return false;
-        
-        const playerX = player.x + player.width / 2;
-        const playerY = player.y + player.height / 2;
-        const cannoneerCenterX = this.x + this.width / 2;
-        const cannoneerCenterY = this.y + this.height / 2;
-        
-        // Check horizontal distance
-        const horizontalDistance = Math.abs(playerX - cannoneerCenterX);
-        if (horizontalDistance > this.range) return false;
-        
-        // Check if player is on the correct side
-        if (this.direction === -1 && playerX >= cannoneerCenterX) return false;
-        if (this.direction === 1 && playerX <= cannoneerCenterX) return false;
-        
-        // Check vertical distance
-        const verticalDistance = Math.abs(playerY - cannoneerCenterY);
-        if (verticalDistance > 120) return false;
-        
-        return true;
+    return false; // Boss still alive
+  }
+
+  canSeePlayer() {
+    if (!player) return false;
+
+    const playerX = player.x + player.width / 2;
+    const playerY = player.y + player.height / 2;
+    const mobCenterX = this.x + this.width / 2;
+    const mobCenterY = this.y + this.height / 2;
+
+    // Check horizontal distance
+    const horizontalDistance = Math.abs(playerX - mobCenterX);
+    const maxRange = this.type === "ironGiant" ? 400 : this.range || 400;
+
+    if (horizontalDistance > maxRange) return false;
+
+    // For cannoneers, check direction
+    if (this.type === "cannoneer") {
+      if (this.direction === -1 && playerX >= mobCenterX) return false;
+      if (this.direction === 1 && playerX <= mobCenterX) return false;
     }
 
-    fireProjectile() {
-        const projectileX = this.direction === -1 ? this.x - 10 : this.x + this.width + 10;
-        const projectileY = this.y + this.height / 2 - 8;
-        
-        const projectile = new Projectile(projectileX, projectileY, 'fireball', {
-            direction: this.direction,
-            speed: 4
-        });
-        
-        projectileManager.addProjectile(projectile);
-        console.log('Projectile fired from cannoneer!');
+    // Check vertical distance
+    const verticalDistance = Math.abs(playerY - mobCenterY);
+    if (verticalDistance > 120) return false;
+
+    return true;
+  }
+
+  fireProjectile() {
+    let projectileX, projectileY, projectileConfig;
+
+    if (this.type === "cannoneer") {
+      projectileX =
+        this.direction === -1 ? this.x - 10 : this.x + this.width + 10;
+      projectileY = this.y + this.height / 2 - 8;
+      projectileConfig = {
+        direction: this.direction,
+        speed: 4,
+      };
+    } else if (this.type === "ironGiant") {
+      // Iron Giant shoots toward player
+      const playerX = player.x + player.width / 2;
+      const giantCenterX = this.x + this.width / 2;
+      const direction = playerX < giantCenterX ? -1 : 1;
+
+      projectileX = direction === -1 ? this.x - 10 : this.x + this.width + 10;
+      projectileY = this.y + this.height / 2 - 8;
+      projectileConfig = {
+        direction: direction,
+        speed: 5, // Slightly faster than cannoneer
+        type: "bossFireball",
+      };
     }
 
-    render(ctx) {
-        if (!this.active) return;
+    const projectile = new Projectile(
+      projectileX,
+      projectileY,
+      "fireball",
+      projectileConfig
+    );
+    projectileManager.addProjectile(projectile);
 
-        switch(this.type) {
-            case 'cannoneer':
-                this.renderCannoneer(ctx);
-                break;
-        }
-    }
+    console.log(`${this.type} fired projectile!`);
+  }
 
-    renderCannoneer(ctx) {
-        // Draw cannoneer base
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
-        
-        // Draw cannoneer barrel
-        const barrelWidth = 25;
-        const barrelHeight = 12;
-        const barrelX = this.direction === -1 ? this.x - 15 : this.x + this.width - 10;
-        const barrelY = this.y + this.height / 2 - barrelHeight / 2;
-        
-        ctx.fillStyle = this.barrelColor;
-        ctx.fillRect(barrelX, barrelY, barrelWidth, barrelHeight);
-        
-        // Add wheels
-        ctx.fillStyle = '#1a252f';
-        ctx.fillRect(this.x + 5, this.y + this.height - 8, 8, 8);
-        ctx.fillRect(this.x + this.width - 13, this.y + this.height - 8, 8, 8);
-        
-        // Border
-        ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
+  render(ctx) {
+    if (!this.active) return;
+
+    switch (this.type) {
+      case "cannoneer":
+        this.renderCannoneer(ctx);
+        break;
+      case "ironGiant":
+        this.renderIronGiant(ctx);
+        break;
     }
+  }
+
+  renderCannoneer(ctx) {
+    // Draw cannoneer base
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+
+    // Draw barrel
+    const barrelWidth = 25;
+    const barrelHeight = 12;
+    const barrelX =
+      this.direction === -1 ? this.x - 15 : this.x + this.width - 10;
+    const barrelY = this.y + this.height / 2 - barrelHeight / 2;
+
+    ctx.fillStyle = this.barrelColor;
+    ctx.fillRect(barrelX, barrelY, barrelWidth, barrelHeight);
+
+    // Add wheels
+    ctx.fillStyle = "#1a252f";
+    ctx.fillRect(this.x + 5, this.y + this.height - 8, 8, 8);
+    ctx.fillRect(this.x + this.width - 13, this.y + this.height - 8, 8, 8);
+
+    // Border
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(this.x, this.y, this.width, this.height);
+  }
+
+  renderIronGiant(ctx) {
+    // Flash red when stunned
+    const baseColor = this.isStunned ? "#c0392b" : this.color;
+
+    // Main body
+    ctx.fillStyle = baseColor;
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+
+    // Red accent stripes
+    ctx.fillStyle = this.accentColor;
+    ctx.fillRect(this.x + 5, this.y + 10, this.width - 10, 6);
+    ctx.fillRect(this.x + 5, this.y + 25, this.width - 10, 6);
+
+    // Glowing eyes
+    ctx.fillStyle = this.eyeColor;
+    ctx.fillRect(this.x + 15, this.y + 8, 8, 8);
+    ctx.fillRect(this.x + this.width - 23, this.y + 8, 8, 8);
+
+    // Health indicator above boss
+    this.renderHealthBar(ctx);
+
+    // Border
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(this.x, this.y, this.width, this.height);
+
+    // Boss label
+    ctx.fillStyle = "white";
+    ctx.font = "bold 14px Arial";
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#e74c3c";
+    ctx.fillText("IRON GIANT", this.x + this.width / 2, this.y - 20);
+    ctx.textAlign = "left";
+  }
+
+  renderHealthBar(ctx) {
+    const barWidth = 60;
+    const barHeight = 8;
+    const barX = this.x + (this.width - barWidth) / 2;
+    const barY = this.y - 15;
+
+    // Background
+    ctx.fillStyle = "#2c3e50";
+    ctx.fillRect(barX, barY, barWidth, barHeight);
+
+    // Health
+    const healthPercent = this.health / this.maxHealth;
+    const healthColor =
+      healthPercent > 0.6
+        ? "#2ecc71"
+        : healthPercent > 0.3
+        ? "#f39c12"
+        : "#e74c3c";
+    ctx.fillStyle = healthColor;
+    ctx.fillRect(barX, barY, barWidth * healthPercent, barHeight);
+
+    // Border
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(barX, barY, barWidth, barHeight);
+  }
 }
 
 class Projectile {
-    constructor(x, y, type, config = {}) {
-        this.x = x;
-        this.y = y;
-        this.type = type;
-        this.active = true;
-        
-        console.log(`Creating projectile at (${x}, ${y})`);
-        
-        switch(type) {
-            case 'fireball':
-                this.initFireball(config);
-                break;
-        }
+  constructor(x, y, type, config = {}) {
+    this.x = x;
+    this.y = y;
+    this.type = type;
+    this.active = true;
+
+    console.log(`Creating projectile at (${x}, ${y})`);
+
+    switch (type) {
+      case "fireball":
+        this.initFireball(config);
+        break;
+    }
+  }
+
+  initFireball(config) {
+    this.width = config.type === "bossFireball" ? 20 : 16;
+    this.height = config.type === "bossFireball" ? 20 : 16;
+    this.speed = config.speed || 4;
+    this.direction = config.direction || -1;
+    this.velocityX = this.speed * this.direction;
+    this.velocityY = 0;
+    this.color = config.type === "bossFireball" ? "#8e44ad" : "#e74c3c"; // Purple for boss
+    this.glowColor = config.type === "bossFireball" ? "#9b59b6" : "#f39c12";
+    this.lifetime = 8000;
+    this.createdTime = Date.now();
+    this.isBossProjectile = config.type === "bossFireball";
+
+    console.log(
+      `Fireball created: speed=${this.speed}, direction=${this.direction}, boss=${this.isBossProjectile}`
+    );
+  }
+
+  update() {
+    if (!this.active) return;
+
+    this.x += this.velocityX;
+    this.y += this.velocityY;
+
+    this.checkPlayerCollision();
+    this.checkPlatformCollisions();
+    this.checkLifetime();
+  }
+
+  checkPlayerCollision() {
+    if (!player || player.isDead) return;
+
+    if (this.checkCollision(player)) {
+      this.active = false;
+      player.die();
+      console.log("Player hit by projectile!");
+    }
+  }
+
+  checkPlatformCollisions() {
+    const currentLevel = levelManager.getCurrentLevel();
+    if (!currentLevel) return;
+
+    for (let platform of currentLevel.platforms) {
+      if (this.checkCollision(platform)) {
+        this.active = false;
+        break;
+      }
+    }
+  }
+
+  checkCollision(target) {
+    return (
+      this.x < target.x + target.width &&
+      this.x + this.width > target.x &&
+      this.y < target.y + target.height &&
+      this.y + this.height > target.y
+    );
+  }
+
+  checkLifetime() {
+    if (Date.now() - this.createdTime > this.lifetime) {
+      this.active = false;
     }
 
-    initFireball(config) {
-        this.width = 16;
-        this.height = 16;
-        this.speed = config.speed || 4;
-        this.direction = config.direction || -1;
-        this.velocityX = this.speed * this.direction;
-        this.velocityY = 0;
-        this.color = '#e74c3c';
-        this.glowColor = '#f39c12';
-        this.lifetime = 8000;
-        this.createdTime = Date.now();
-        
-        console.log(`Fireball created: speed=${this.speed}, direction=${this.direction}, velocityX=${this.velocityX}`);
+    if (this.x < -200 || this.x > 5000) {
+      this.active = false;
     }
+  }
 
-    update() {
-        if (!this.active) return;
+  render(ctx) {
+    if (!this.active) return;
 
-        // Update position
-        this.x += this.velocityX;
-        this.y += this.velocityY;
-
-        // Check collision with player
-        this.checkPlayerCollision();
-
-        // Check collision with platforms
-        this.checkPlatformCollisions();
-
-        // Remove if too old or off screen
-        this.checkLifetime();
+    switch (this.type) {
+      case "fireball":
+        this.renderFireball(ctx);
+        break;
     }
+  }
 
-    checkPlayerCollision() {
-        if (!player || player.isDead) return;
-        
-        if (this.checkCollision(player)) {
-            this.active = false;
-            player.die();
-            console.log('Player hit by projectile!');
-        }
-    }
+  renderFireball(ctx) {
+    // Larger glow for boss projectiles
+    const glowSize = this.isBossProjectile ? this.width + 12 : this.width + 4;
 
-    checkPlatformCollisions() {
-        const currentLevel = levelManager.getCurrentLevel();
-        if (!currentLevel) return;
+    ctx.beginPath();
+    ctx.arc(
+      this.x + this.width / 2,
+      this.y + this.height / 2,
+      glowSize / 2,
+      0,
+      Math.PI * 2
+    );
+    ctx.fillStyle = this.glowColor + "40";
+    ctx.fill();
 
-        for (let platform of currentLevel.platforms) {
-            if (this.checkCollision(platform)) {
-                this.active = false;
-                break;
-            }
-        }
-    }
+    // Main fireball
+    ctx.beginPath();
+    ctx.arc(
+      this.x + this.width / 2,
+      this.y + this.height / 2,
+      this.width / 2,
+      0,
+      Math.PI * 2
+    );
+    ctx.fillStyle = this.color;
+    ctx.fill();
 
-    checkCollision(target) {
-        return this.x < target.x + target.width &&
-               this.x + this.width > target.x &&
-               this.y < target.y + target.height &&
-               this.y + this.height > target.y;
-    }
-
-    checkLifetime() {
-        // Remove if too old
-        if (Date.now() - this.createdTime > this.lifetime) {
-            this.active = false;
-        }
-        
-        // Remove if way off screen
-        if (this.x < -200 || this.x > 3000) {
-            this.active = false;
-        }
-    }
-
-    render(ctx) {
-        if (!this.active) return;
-
-        switch(this.type) {
-            case 'fireball':
-                this.renderFireball(ctx);
-                break;
-        }
-    }
-
-    renderFireball(ctx) {
-        // Draw glow effect
-        ctx.beginPath();
-        ctx.arc(this.x + this.width/2, this.y + this.height/2, this.width + 4, 0, Math.PI * 2);
-        ctx.fillStyle = this.glowColor + '40';
-        ctx.fill();
-        
-        // Draw main fireball
-        ctx.beginPath();
-        ctx.arc(this.x + this.width/2, this.y + this.height/2, this.width/2, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.fill();
-        
-        // Add highlight
-        ctx.beginPath();
-        ctx.arc(this.x + this.width/2 - 2, this.y + this.height/2 - 2, this.width/4, 0, Math.PI * 2);
-        ctx.fillStyle = '#f1c40f';
-        ctx.fill();
-    }
+    // Highlight
+    ctx.beginPath();
+    ctx.arc(
+      this.x + this.width / 2 - 2,
+      this.y + this.height / 2 - 2,
+      this.width / 4,
+      0,
+      Math.PI * 2
+    );
+    ctx.fillStyle = this.isBossProjectile ? "#f1c40f" : "#f1c40f";
+    ctx.fill();
+  }
 }
 
 class ProjectileManager {
-    constructor() {
-        this.projectiles = [];
-    }
+  constructor() {
+    this.projectiles = [];
+  }
 
-    addProjectile(projectile) {
-        this.projectiles.push(projectile);
-        console.log(`Projectile added! Total: ${this.projectiles.length}`);
-    }
+  addProjectile(projectile) {
+    this.projectiles.push(projectile);
+    console.log(`Projectile added! Total: ${this.projectiles.length}`);
+  }
 
-    update() {
-        for (let i = this.projectiles.length - 1; i >= 0; i--) {
-            this.projectiles[i].update();
-            
-            if (!this.projectiles[i].active) {
-                this.projectiles.splice(i, 1);
-            }
-        }
-    }
+  update() {
+    for (let i = this.projectiles.length - 1; i >= 0; i--) {
+      this.projectiles[i].update();
 
-    render(ctx) {
-        for (let projectile of this.projectiles) {
-            projectile.render(ctx);
-        }
+      if (!this.projectiles[i].active) {
+        this.projectiles.splice(i, 1);
+      }
     }
+  }
 
-    clearAll() {
-        this.projectiles = [];
-        console.log('All projectiles cleared');
+  render(ctx) {
+    for (let projectile of this.projectiles) {
+      projectile.render(ctx);
     }
+  }
+
+  clearAll() {
+    this.projectiles = [];
+    console.log("All projectiles cleared");
+  }
 }
 
 // Global instances
