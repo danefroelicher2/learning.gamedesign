@@ -33,13 +33,14 @@ class Camera {
     this.bossArenaX = arenaX;
     this.bossArenaWidth = arenaWidth;
 
-    // Center camera on boss arena
-    const targetX = arenaX + arenaWidth / 2 - this.canvas.width / 2;
-    this.x = Math.max(this.minX, Math.min(this.maxX, targetX));
+    // Position camera to show full screen width of boss arena
+    // Center the boss arena on screen, but make sure entire screen width is arena
+    const idealCameraX = arenaX + arenaWidth / 2 - this.canvas.width / 2;
 
-    console.log(
-      `Camera locked to boss arena at x: ${arenaX}, width: ${arenaWidth}`
-    );
+    // Adjust camera position to ensure full screen is within arena bounds
+    this.x = Math.max(this.minX, Math.min(this.maxX, idealCameraX));
+
+    console.log(`Camera locked to boss arena. Arena spans full screen width.`);
   }
 
   unlockFromBossArena() {
