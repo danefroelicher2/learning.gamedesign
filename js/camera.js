@@ -13,6 +13,11 @@ class Camera {
     this.maxX = 0;
     this.minY = 0;
     this.maxY = 0;
+
+    // Boss arena lock
+    this.isLockedToBossArena = false;
+    this.bossArenaX = 0;
+    this.bossArenaWidth = 0;
   }
 
   setLevelBounds(levelWidth, levelHeight = 400) {
@@ -23,12 +28,36 @@ class Camera {
     this.minY = 0;
   }
 
+  lockToBossArena(arenaX, arenaWidth) {
+    this.isLockedToBossArena = true;
+    this.bossArenaX = arenaX;
+    this.bossArenaWidth = arenaWidth;
+
+    // Center camera on boss arena
+    const targetX = arenaX + arenaWidth / 2 - this.canvas.width / 2;
+    this.x = Math.max(this.minX, Math.min(this.maxX, targetX));
+
+    console.log(
+      `Camera locked to boss arena at x: ${arenaX}, width: ${arenaWidth}`
+    );
+  }
+
+  unlockFromBossArena() {
+    this.isLockedToBossArena = false;
+    console.log("Camera unlocked from boss arena");
+  }
+
   update() {
     if (gameStateManager.currentState !== "playing") {
       // Reset camera when not playing
       this.x = 0;
       this.y = 0;
       return;
+    }
+
+    // If locked to boss arena, don't follow player
+    if (this.isLockedToBossArena) {
+      return; // Camera stays fixed on boss arena
     }
 
     // Calculate target camera position based on player

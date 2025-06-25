@@ -63,7 +63,8 @@ class Player {
     this.handleInput();
     this.applyPhysics();
     this.handleCollisions();
-    this.checkCannoneerCollisions(); // New: Check collision with cannoneer bodies
+    this.checkCannoneerCollisions();
+    this.checkBossJumpAttack(); // New: Check if jumping on boss
     this.checkBounds();
     this.checkFallReset();
     this.checkGoalReached();
@@ -135,6 +136,48 @@ class Player {
           console.log("Player touched cannoneer body!");
           this.die();
           return; // Exit early since player is dead
+        }
+      }
+    }
+  }
+
+  checkBossJumpAttack() {
+    // Check if player is jumping on Iron Giant boss
+    const mobs = levelManager.mobs;
+    if (!mobs) return;
+
+    for (let mob of mobs) {
+      if (mob.active && mob.type === "ironGiant") {
+        // Check if player is falling down onto the boss
+        if (this.velocityY > 0 && this.checkCollision(mob)) {
+          // Check if player is above the boss (jumping on head)
+          const playerBottom = this.y + this.height;
+          const bossTop = mob.y;
+          const bossCenter = mob.x + mob.width / 2;
+          const playerCenter = this.x + this.width / 2;
+
+          // Player must be coming from above and be reasonably centered
+          if (
+            playerBottom <= bossTop + 10 &&
+            Math.abs(playerCenter - bossCenter) < mob.width / 2
+          ) {
+            console.log("Player jumped on Iron Giant head!");
+
+            // Bounce player up
+            this.velocityY = -this.jumpPower * 0.8; // Smaller bounce
+
+            // Damage the boss
+            const bossDefeated = mob.takeDamage();
+
+            return; // Exit to prevent side collision death
+          }
+        }
+
+        // If not jumping on head but touching boss = death
+        if (this.checkCollision(mob) && !mob.isStunned) {
+          console.log("Player touched Iron Giant body!");
+          this.die();
+          return;
         }
       }
     }

@@ -4,6 +4,7 @@ class LevelManager {
     this.currentLevelIndex = 0;
     this.currentLevel = null;
     this.mobs = []; // Track active mobs
+    this.bossDefeated = false;
   }
 
   startLevel(levelIndex) {
@@ -14,6 +15,7 @@ class LevelManager {
 
     this.currentLevelIndex = levelIndex;
     this.currentLevel = LEVELS[levelIndex];
+    this.bossDefeated = false;
 
     console.log("Starting level:", this.currentLevel);
 
@@ -105,12 +107,15 @@ class LevelManager {
     const controls = document.getElementById("controls");
     if (controls) {
       controls.textContent =
-        "WASD/Arrow Keys: Move & Jump | Avoid fireballs and cannoneers!";
+        "WASD/Arrow Keys: Move & Jump | Jump on boss head to defeat it!";
     }
   }
 
   update(deltaTime) {
     if (gameStateManager.currentState !== "playing") return;
+
+    // Check for boss arena trigger
+    this.checkBossArenaTrigger();
 
     // Update camera
     camera.update();
@@ -126,6 +131,45 @@ class LevelManager {
     projectileManager.update();
   }
 
+  checkBossArenaTrigger() {
+    if (!this.currentLevel.bossArena) return;
+    if (this.currentLevel.bossArena.triggered) return;
+
+    const arena = this.currentLevel.bossArena;
+    const playerX = player.x + player.width / 2;
+
+    // Check if player entered boss arena
+    if (playerX >= arena.x && playerX <= arena.x + arena.width) {
+      console.log("Player entered boss arena! Locking camera...");
+
+      // Mark as triggered
+      this.currentLevel.bossArena.triggered = true;
+
+      // Lock camera to boss arena
+      camera.lockToBossArena(arena.x, arena.width);
+
+      // Update UI for boss fight
+      deathCounter.updateLevelHeader(this.currentLevel.name + " - BOSS FIGHT");
+    }
+  }
+
+  onBossDefeated() {
+    console.log("Boss defeated! Unlocking camera...");
+
+    this.bossDefeated = true;
+
+    // Unlock camera
+    camera.unlockFromBossArena();
+
+    // Update UI
+    deathCounter.updateLevelHeader(this.currentLevel.name + " - Victory!");
+
+    // Show victory message briefly
+    setTimeout(() => {
+      deathCounter.updateLevelHeader(this.currentLevel.name);
+    }, 3000);
+  }
+
   render(ctx, canvas) {
     if (!this.currentLevel) return;
 
@@ -134,6 +178,7 @@ class LevelManager {
     this.drawGoal(ctx);
     this.drawMobs(ctx);
     this.drawProjectiles(ctx);
+    this.drawBossArenaWalls(ctx);
   }
 
   drawBackground(ctx, canvas) {
@@ -171,6 +216,8 @@ class LevelManager {
     for (let platform of this.currentLevel.platforms) {
       if (platform.type === "ground") {
         ctx.fillStyle = "#8B4513"; // Brown for ground
+      } else if (platform.type === "wall") {
+        ctx.fillStyle = "#2c3e50"; // Dark blue-gray for walls
       } else {
         ctx.fillStyle = "#CD853F"; // Sandy brown for platforms
       }
@@ -178,9 +225,36 @@ class LevelManager {
       ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
 
       // Add a simple border for visual appeal
-      ctx.strokeStyle = "#654321";
+      ctx.strokeStyle = platform.type === "wall" ? "#34495e" : "#654321";
       ctx.lineWidth = 2;
       ctx.strokeRect(platform.x, platform.y, platform.width, platform.height);
+    }
+  }
+
+  drawBossArenaWalls(ctx) {
+    // Draw boss arena boundaries if triggered
+    if (
+      this.currentLevel.bossArena &&
+      this.currentLevel.bossArena.triggered &&
+      !this.bossDefeated
+    ) {
+      const arena = this.currentLevel.bossArena;
+
+      // Draw warning indicators at arena boundaries
+      ctx.fillStyle = "rgba(231, 76, 60, 0.3)"; // Semi-transparent red
+
+      // Left boundary
+      ctx.fillRect(arena.x - 10, 200, 10, 200);
+
+      // Right boundary
+      ctx.fillRect(arena.x + arena.width, 200, 10, 200);
+
+      // Boss arena label
+      ctx.fillStyle = "#e74c3c";
+      ctx.font = "bold 20px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("BOSS ARENA", arena.x + arena.width / 2, 180);
+      ctx.textAlign = "left";
     }
   }
 
