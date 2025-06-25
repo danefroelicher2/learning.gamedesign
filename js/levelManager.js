@@ -178,7 +178,7 @@ class LevelManager {
     this.drawGoal(ctx);
     this.drawMobs(ctx);
     this.drawProjectiles(ctx);
-    this.drawBossArenaWalls(ctx);
+    this.drawBossArenaIndicators(ctx); // Changed from drawBossArenaWalls
   }
 
   drawBackground(ctx, canvas) {
@@ -231,8 +231,8 @@ class LevelManager {
     }
   }
 
-  drawBossArenaWalls(ctx) {
-    // Draw boss arena boundaries if triggered
+  drawBossArenaIndicators(ctx) {
+    // Draw subtle boss arena indicators if triggered (no walls!)
     if (
       this.currentLevel.bossArena &&
       this.currentLevel.bossArena.triggered &&
@@ -240,20 +240,20 @@ class LevelManager {
     ) {
       const arena = this.currentLevel.bossArena;
 
-      // Draw warning indicators at arena boundaries
-      ctx.fillStyle = "rgba(231, 76, 60, 0.3)"; // Semi-transparent red
+      // Draw subtle boundary indicators on the ground only
+      ctx.fillStyle = "#e74c3c"; // Red indicators
 
-      // Left boundary
-      ctx.fillRect(arena.x - 10, 200, 10, 200);
+      // Left boundary marker (small ground indicator)
+      ctx.fillRect(arena.x - 5, 360, 5, 20);
 
-      // Right boundary
-      ctx.fillRect(arena.x + arena.width, 200, 10, 200);
+      // Right boundary marker (small ground indicator)
+      ctx.fillRect(arena.x + arena.width, 360, 5, 20);
 
-      // Boss arena label
+      // Boss arena label in the sky
       ctx.fillStyle = "#e74c3c";
-      ctx.font = "bold 20px Arial";
+      ctx.font = "bold 24px Arial";
       ctx.textAlign = "center";
-      ctx.fillText("BOSS ARENA", arena.x + arena.width / 2, 180);
+      ctx.fillText("⚔️ BOSS ARENA ⚔️", arena.x + arena.width / 2, 100);
       ctx.textAlign = "left";
     }
   }

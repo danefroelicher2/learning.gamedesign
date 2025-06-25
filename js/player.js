@@ -64,7 +64,8 @@ class Player {
     this.applyPhysics();
     this.handleCollisions();
     this.checkCannoneerCollisions();
-    this.checkBossJumpAttack(); // New: Check if jumping on boss
+    this.checkBossJumpAttack();
+    this.checkBossArenaBounds(); // New: Check boss arena boundaries
     this.checkBounds();
     this.checkFallReset();
     this.checkGoalReached();
@@ -79,9 +80,45 @@ class Player {
 
   respawn() {
     const level = levelManager.getCurrentLevel();
-    if (level) {
+    if (!level) return;
+
+    // Check if player died in boss arena
+    if (
+      level.bossArena &&
+      level.bossArena.triggered &&
+      !levelManager.bossDefeated
+    ) {
+      // Respawn at boss arena entrance
+      this.setPosition(level.bossArena.respawnX, level.bossArena.respawnY);
+      console.log("Player respawned at boss arena entrance!");
+    } else {
+      // Normal respawn at level start
       this.setPosition(level.playerStart.x, level.playerStart.y);
-      console.log("Player respawned!");
+      console.log("Player respawned at level start!");
+    }
+  }
+
+  checkBossArenaBounds() {
+    const level = levelManager.getCurrentLevel();
+    if (
+      !level ||
+      !level.bossArena ||
+      !level.bossArena.triggered ||
+      levelManager.bossDefeated
+    )
+      return;
+
+    const arena = level.bossArena;
+
+    // Prevent player from leaving boss arena (invisible walls)
+    if (this.x < arena.x) {
+      this.x = arena.x;
+      this.velocityX = 0;
+    }
+
+    if (this.x + this.width > arena.x + arena.width) {
+      this.x = arena.x + arena.width - this.width;
+      this.velocityX = 0;
     }
   }
 

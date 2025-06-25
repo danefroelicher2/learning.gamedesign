@@ -1,4 +1,4 @@
-// Level 1: The Pound - Expanded with Boss Arena
+// Level 1: The Pound - Expanded with Flat Boss Arena
 const LEVEL_1 = {
   id: 1,
   name: "Level 1 - The Pound",
@@ -22,10 +22,8 @@ const LEVEL_1 = {
     // SECTION 5: Extended flat stretch before boss (much longer)
     { x: 1700, y: 370, width: 1200, height: 30, type: "ground" },
 
-    // SECTION 6: Boss Arena - enclosed area
-    { x: 3000, y: 370, width: 800, height: 30, type: "ground" }, // Boss arena floor
-    { x: 2980, y: 200, width: 20, height: 170, type: "wall" }, // Left wall (entrance barrier)
-    { x: 3800, y: 200, width: 20, height: 170, type: "wall" }, // Right wall (exit barrier)
+    // SECTION 6: Boss Arena - COMPLETELY FLAT (no walls!)
+    { x: 3000, y: 370, width: 800, height: 30, type: "ground" },
 
     // SECTION 7: Final stretch to flag (after boss defeat)
     { x: 3900, y: 370, width: 400, height: 30, type: "ground" },
@@ -80,8 +78,10 @@ const LEVEL_1 = {
   goal: { x: 4250, y: 340, width: 30, height: 30 }, // After the boss arena
   playerStart: { x: 50, y: 300 },
   bossArena: {
-    x: 3000,
-    width: 800,
+    x: 3000, // Arena start
+    width: 800, // Arena width
+    respawnX: 3050, // Where to respawn if player dies in boss fight
+    respawnY: 300, // Respawn Y position
     triggered: false,
   },
   background: {
