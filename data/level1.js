@@ -1,4 +1,4 @@
-// Level 1: The Pound - Expanded with Flat Boss Arena
+// Level 1: The Pound - Expanded with Continuous Flat Surface
 const LEVEL_1 = {
   id: 1,
   name: "Level 1 - The Pound",
@@ -19,14 +19,9 @@ const LEVEL_1 = {
     // SECTION 4: Landing platform after the 3 jumps
     { x: 1540, y: 350, width: 120, height: 20, type: "platform" },
 
-    // SECTION 5: Extended flat stretch before boss (much longer)
-    { x: 1700, y: 370, width: 1200, height: 30, type: "ground" },
-
-    // SECTION 6: Boss Arena - COMPLETELY FLAT (no walls!)
-    { x: 3000, y: 370, width: 800, height: 30, type: "ground" },
-
-    // SECTION 7: Final stretch to flag (after boss defeat)
-    { x: 3900, y: 370, width: 400, height: 30, type: "ground" },
+    // SECTION 5-7: ONE CONTINUOUS FLAT SURFACE (no gaps!)
+    // From landing platform through boss arena to goal
+    { x: 1700, y: 370, width: 2900, height: 30, type: "ground" },
   ],
   mobs: [
     // Original cannoneers (first challenges)
@@ -75,7 +70,7 @@ const LEVEL_1 = {
     },
   ],
   collectibles: [],
-  goal: { x: 4250, y: 340, width: 30, height: 30 }, // After the boss arena
+  goal: { x: 4250, y: 340, width: 30, height: 30 }, // At the end of the continuous platform
   playerStart: { x: 50, y: 300 },
   bossArena: {
     x: 3000, // Arena start
