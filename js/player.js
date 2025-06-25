@@ -65,7 +65,7 @@ class Player {
     this.handleCollisions();
     this.checkCannoneerCollisions();
     this.checkBossJumpAttack();
-    this.checkBossArenaBounds(); // New: Check boss arena boundaries
+    this.checkBossArenaBounds(canvas); // Pass canvas for screen width
     this.checkBounds();
     this.checkFallReset();
     this.checkGoalReached();
@@ -98,7 +98,7 @@ class Player {
     }
   }
 
-  checkBossArenaBounds() {
+  checkBossArenaBounds(canvas) {
     const level = levelManager.getCurrentLevel();
     if (
       !level ||
@@ -108,18 +108,23 @@ class Player {
     )
       return;
 
-    const arena = level.bossArena;
+    // Use camera bounds instead of arena bounds for full screen containment
+    const cameraBounds = camera.getViewBounds();
 
-    // Prevent player from leaving boss arena (invisible walls)
-    if (this.x < arena.x) {
-      this.x = arena.x;
+    // Prevent player from leaving the visible screen during boss fight
+    if (this.x < cameraBounds.left) {
+      this.x = cameraBounds.left;
       this.velocityX = 0;
     }
 
-    if (this.x + this.width > arena.x + arena.width) {
-      this.x = arena.x + arena.width - this.width;
+    if (this.x + this.width > cameraBounds.right) {
+      this.x = cameraBounds.right - this.width;
       this.velocityX = 0;
     }
+
+    console.log(
+      `Player constrained to camera bounds: ${cameraBounds.left} - ${cameraBounds.right}`
+    );
   }
 
   handleInput() {
