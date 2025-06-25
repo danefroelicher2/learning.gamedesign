@@ -3,23 +3,23 @@ const LEVEL_1 = {
   id: 1,
   name: "Getting Started",
   platforms: [
-    // SECTION 1: Original starting area (expanded)
+    // SECTION 1: Original starting area
     { x: 0, y: 370, width: 200, height: 30, type: "ground" },
     { x: 300, y: 320, width: 150, height: 20, type: "platform" },
     { x: 550, y: 270, width: 150, height: 20, type: "platform" },
 
-    // SECTION 2: After first cannoneer - transition platform
+    // SECTION 2: After first cannoneer - transition platform (with gap for jumping)
     { x: 800, y: 320, width: 100, height: 20, type: "platform" },
 
-    // SECTION 3: The 3-jump challenge with two cannoneers
+    // SECTION 3: The 3-jump challenge with two cannoneers (ensure proper gaps)
     { x: 1000, y: 280, width: 80, height: 20, type: "platform" }, // Jump 1
     { x: 1180, y: 240, width: 80, height: 20, type: "platform" }, // Jump 2
     { x: 1360, y: 200, width: 80, height: 20, type: "platform" }, // Jump 3
 
-    // SECTION 4: Landing platform after the 3 jumps
+    // SECTION 4: Landing platform after the 3 jumps (larger landing area)
     { x: 1540, y: 350, width: 120, height: 20, type: "platform" },
 
-    // SECTION 5: Final long flat stretch (page length ~800px)
+    // SECTION 5: Final long flat stretch (ensure continuity)
     { x: 1700, y: 370, width: 800, height: 30, type: "ground" },
   ],
   mobs: [

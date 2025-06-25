@@ -39,7 +39,7 @@ class Camera {
     this.x += (targetX - this.x) * this.followSpeed;
     this.y += (targetY - this.y) * this.followSpeed;
 
-    // Constrain camera to level bounds
+    // Constrain camera to level bounds (but don't constrain player movement)
     this.x = Math.max(this.minX, Math.min(this.maxX, this.x));
     this.y = Math.max(this.minY, Math.min(this.maxY, this.y));
   }

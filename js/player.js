@@ -60,7 +60,7 @@ class Player {
     this.handleInput();
     this.applyPhysics();
     this.handleCollisions();
-    this.constrainToScreen(canvas);
+    this.checkBounds(); // Changed from constrainToScreen
     this.checkFallReset();
     this.checkGoalReached();
   }
@@ -130,36 +130,56 @@ class Player {
   }
 
   resolveCollision(platform) {
-    // Landing on top of platform
-    if (this.velocityY > 0 && this.y < platform.y) {
+    const overlapLeft = this.x + this.width - platform.x;
+    const overlapRight = platform.x + platform.width - this.x;
+    const overlapTop = this.y + this.height - platform.y;
+    const overlapBottom = platform.y + platform.height - this.y;
+
+    const wasOnGround = this.onGround;
+
+    // Find the smallest overlap to determine collision direction
+    const minOverlap = Math.min(
+      overlapLeft,
+      overlapRight,
+      overlapTop,
+      overlapBottom
+    );
+
+    if (minOverlap === overlapTop && this.velocityY > 0) {
+      // Landing on top of platform
       this.y = platform.y - this.height;
       this.velocityY = 0;
       this.onGround = true;
-    }
-    // Hitting platform from below
-    else if (this.velocityY < 0 && this.y > platform.y) {
+    } else if (minOverlap === overlapBottom && this.velocityY < 0) {
+      // Hitting platform from below
       this.y = platform.y + platform.height;
       this.velocityY = 0;
-    }
-    // Hitting platform from the side
-    else if (this.velocityX > 0) {
+    } else if (minOverlap === overlapLeft && this.velocityX > 0) {
+      // Hitting platform from the left
       this.x = platform.x - this.width;
-    } else if (this.velocityX < 0) {
+      this.velocityX = 0;
+    } else if (minOverlap === overlapRight && this.velocityX < 0) {
+      // Hitting platform from the right
       this.x = platform.x + platform.width;
+      this.velocityX = 0;
     }
   }
 
-  constrainToScreen(canvas) {
-    if (this.x < 0) this.x = 0;
-    if (this.x + this.width > canvas.width) {
-      this.x = canvas.width - this.width;
+  checkBounds() {
+    // Only constrain to the left edge - let player move right freely
+    if (this.x < 0) {
+      this.x = 0;
+      this.velocityX = 0;
     }
+
+    // Don't constrain right movement - let camera handle it
+    // The camera system will manage the right boundary
   }
 
   checkFallReset() {
-    const canvas = document.getElementById("gameCanvas");
-    if (this.y > canvas.height) {
-      // Falling off screen counts as death
+    // Falling off screen counts as death
+    if (this.y > 600) {
+      // Increased threshold for larger levels
       this.die();
     }
   }
@@ -170,6 +190,7 @@ class Player {
 
     const goal = currentLevel.goal;
     if (this.checkCollision(goal)) {
+      console.log("Goal reached!");
       gameStateManager.completeLevel();
     }
   }
@@ -189,6 +210,11 @@ class Player {
       // Normal render
       ctx.fillStyle = this.color;
       ctx.fillRect(this.x, this.y, this.width, this.height);
+
+      // Debug: show player position
+      console.log(
+        `Player position: (${Math.round(this.x)}, ${Math.round(this.y)})`
+      );
     }
   }
 }
