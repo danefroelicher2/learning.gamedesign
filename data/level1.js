@@ -18,7 +18,7 @@ const LEVEL_1 = {
     // SECTION 3: PRECISION JUMPING GAUNTLET (15-25%)
     { x: 1400, y: 280, width: 60, height: 15, type: "platform" }, // Smaller platforms
     { x: 1520, y: 320, width: 60, height: 15, type: "platform" },
-    { x: 1640, y: 260, width: 60, height: 15, type: "platform" },
+    { x: 1640, y: 280, width: 60, height: 15, type: "platform" }, // FIXED: Lowered from 260 to 280
     { x: 1760, y: 300, width: 60, height: 15, type: "platform" },
     { x: 1880, y: 240, width: 80, height: 20, type: "platform" },
 
@@ -83,10 +83,10 @@ const LEVEL_1 = {
     { x: 11550, y: 1050, width: 400, height: 30, type: "ground" },
   ],
   mobs: [
-    // SECTION 2: TUTORIAL CANNONEERS (On RIGHT side of platforms - can jump over)
+    // SECTION 2: TUTORIAL CANNONEERS (FIXED: Moved to empty space)
     {
-      x: 870, // On platform at x:700, width:120 - positioned at RIGHT end so player can land LEFT and jump over
-      y: 270, // On the platform
+      x: 840, // FIXED: In empty space between platforms, not ON platform
+      y: 380, // Ground level - can jump over easily
       type: "cannoneer",
       config: {
         direction: -1,
@@ -337,7 +337,23 @@ const LEVEL_1 = {
     },
   ],
   collectibles: [
-    // FIRST CHECKPOINT (After spike introduction)
+    // CHECKPOINT 1: After tutorial section
+    {
+      x: 1350,
+      y: 240,
+      type: "checkpoint",
+      width: 30,
+      height: 40,
+    },
+    // CHECKPOINT 2: After precision gauntlet
+    {
+      x: 2750,
+      y: 310,
+      type: "checkpoint",
+      width: 30,
+      height: 40,
+    },
+    // CHECKPOINT 3: After spike introduction (original first checkpoint)
     {
       x: 3600,
       y: 310,
@@ -345,9 +361,17 @@ const LEVEL_1 = {
       width: 30,
       height: 40,
     },
-    // SECOND CHECKPOINT (After descent)
+    // CHECKPOINT 4: After descent (original second checkpoint)
     {
       x: 6500,
+      y: 1010,
+      type: "checkpoint",
+      width: 30,
+      height: 40,
+    },
+    // CHECKPOINT 5: After spike gauntlet
+    {
+      x: 8300,
       y: 1010,
       type: "checkpoint",
       width: 30,
