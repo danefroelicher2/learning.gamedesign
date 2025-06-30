@@ -18,9 +18,9 @@ const LEVEL_1 = {
     // SECTION 3: PRECISION JUMPING GAUNTLET (15-25%)
     { x: 1400, y: 280, width: 60, height: 15, type: "platform" }, // Smaller platforms
     { x: 1520, y: 320, width: 60, height: 15, type: "platform" },
-    { x: 1640, y: 280, width: 60, height: 15, type: "platform" }, // FIXED: Lowered from 260 to 280
-    { x: 1760, y: 300, width: 60, height: 15, type: "platform" },
-    { x: 1880, y: 240, width: 80, height: 20, type: "platform" },
+    { x: 1640, y: 300, width: 60, height: 15, type: "platform" }, // FIXED: Lowered from 280 to 300 (more reachable)
+    { x: 1760, y: 320, width: 60, height: 15, type: "platform" }, // FIXED: Lowered from 300 to 320
+    { x: 1880, y: 280, width: 80, height: 20, type: "platform" }, // FIXED: Raised from 240 to 280
 
     // SECTION 4: MOVING PLATFORM SIMULATION (Static but positioned like moving) (25-35%)
     { x: 2000, y: 350, width: 80, height: 15, type: "platform" },
@@ -337,42 +337,42 @@ const LEVEL_1 = {
     },
   ],
   collectibles: [
-    // CHECKPOINT 1: After tutorial section
+    // CHECKPOINT 1: After tutorial section (ON PLATFORM)
     {
-      x: 1350,
-      y: 240,
+      x: 1430, // On platform at x:1400, width:60
+      y: 240, // Above platform at y:280
       type: "checkpoint",
       width: 30,
       height: 40,
     },
-    // CHECKPOINT 2: After precision gauntlet
+    // CHECKPOINT 2: After precision gauntlet (ON PLATFORM)
     {
-      x: 2750,
-      y: 310,
+      x: 2820, // On platform at x:2800, width:200
+      y: 310, // Above platform at y:350
       type: "checkpoint",
       width: 30,
       height: 40,
     },
-    // CHECKPOINT 3: After spike introduction (original first checkpoint)
+    // CHECKPOINT 3: After spike introduction (ON PLATFORM)
     {
-      x: 3600,
-      y: 310,
+      x: 3620, // On platform at x:3500, width:250
+      y: 310, // Above platform at y:350
       type: "checkpoint",
       width: 30,
       height: 40,
     },
-    // CHECKPOINT 4: After descent (original second checkpoint)
+    // CHECKPOINT 4: After descent (ON PLATFORM)
     {
-      x: 6500,
-      y: 1010,
+      x: 6520, // On platform at x:6400, width:300
+      y: 1010, // Above platform at y:1050
       type: "checkpoint",
       width: 30,
       height: 40,
     },
-    // CHECKPOINT 5: After spike gauntlet
+    // CHECKPOINT 5: After spike gauntlet (ON PLATFORM)
     {
-      x: 8300,
-      y: 1010,
+      x: 8320, // On platform at x:8200, width:200
+      y: 1010, // Above platform at y:1050
       type: "checkpoint",
       width: 30,
       height: 40,
