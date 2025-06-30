@@ -91,6 +91,7 @@ class Player {
     ) {
       // Respawn at boss arena entrance (if in boss fight)
       this.setPosition(level.bossArena.respawnX, level.bossArena.respawnY);
+      levelManager.resetProgressOnRespawn("bossArena");
       console.log("Player respawned at boss arena!");
     } else if (level.secondCheckpointReached) {
       // Respawn at second checkpoint (if reached)
@@ -98,14 +99,17 @@ class Player {
         level.secondCheckpointPosition.x,
         level.secondCheckpointPosition.y
       );
+      levelManager.resetProgressOnRespawn("secondCheckpoint");
       console.log("Player respawned at second checkpoint!");
     } else if (level.checkpointReached) {
       // Respawn at first checkpoint (if reached)
       this.setPosition(level.checkpointPosition.x, level.checkpointPosition.y);
+      levelManager.resetProgressOnRespawn("firstCheckpoint");
       console.log("Player respawned at first checkpoint!");
     } else {
       // Normal respawn at level start
       this.setPosition(level.playerStart.x, level.playerStart.y);
+      levelManager.resetProgressOnRespawn("start");
       console.log("Player respawned at level start!");
     }
   }
