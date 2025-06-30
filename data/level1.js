@@ -16,11 +16,11 @@ const LEVEL_1 = {
     { x: 1200, y: 200, width: 100, height: 20, type: "platform" },
 
     // SECTION 3: PRECISION JUMPING GAUNTLET (15-25%)
-    { x: 1400, y: 280, width: 60, height: 15, type: "platform" }, // Smaller platforms
+    { x: 1400, y: 280, width: 60, height: 15, type: "platform" },  // Smaller platforms
     { x: 1520, y: 320, width: 60, height: 15, type: "platform" },
-    { x: 1640, y: 300, width: 60, height: 15, type: "platform" }, // FIXED: Lowered from 280 to 300 (more reachable)
-    { x: 1760, y: 320, width: 60, height: 15, type: "platform" }, // FIXED: Lowered from 300 to 320
-    { x: 1880, y: 280, width: 80, height: 20, type: "platform" }, // FIXED: Raised from 240 to 280
+    { x: 1640, y: 300, width: 60, height: 15, type: "platform" },  // FIXED: Lowered from 280 to 300 (more reachable)
+    { x: 1760, y: 320, width: 60, height: 15, type: "platform" },  // FIXED: Lowered from 300 to 320
+    { x: 1880, y: 280, width: 80, height: 20, type: "platform" },  // FIXED: Raised from 240 to 280
 
     // SECTION 4: MOVING PLATFORM SIMULATION (Static but positioned like moving) (25-35%)
     { x: 2000, y: 350, width: 80, height: 15, type: "platform" },
@@ -31,8 +31,8 @@ const LEVEL_1 = {
 
     // SECTION 5: SPIKE ROLLER INTRODUCTION (35-40%)
     { x: 2800, y: 350, width: 200, height: 30, type: "ground" },
-    { x: 3050, y: 300, width: 150, height: 20, type: "platform" },
-    { x: 3250, y: 250, width: 150, height: 20, type: "platform" },
+    { x: 3050, y: 300, width: 250, height: 20, type: "platform" }, // LENGTHENED: was 150, now 250
+    { x: 3250, y: 250, width: 250, height: 20, type: "platform" }, // LENGTHENED: was 150, now 250
 
     // SECTION 6: FIRST CHECKPOINT AREA (40-45%)
     { x: 3500, y: 350, width: 250, height: 30, type: "ground" }, // Safe area
@@ -57,13 +57,13 @@ const LEVEL_1 = {
     // SECTION 9: SECOND CHECKPOINT (65-70%)
     { x: 6400, y: 1050, width: 300, height: 30, type: "ground" },
 
-    // SECTION 10: SPIKE GAUNTLET SUPREME (70-80%)
+    // SECTION 10: SPIKE GAUNTLET SUPREME - MUCH LONGER PLATFORMS (70-80%)
     { x: 6800, y: 1050, width: 180, height: 30, type: "ground" },
-    { x: 7050, y: 1000, width: 160, height: 20, type: "platform" },
-    { x: 7280, y: 950, width: 160, height: 20, type: "platform" },
-    { x: 7510, y: 1000, width: 160, height: 20, type: "platform" },
-    { x: 7740, y: 950, width: 160, height: 20, type: "platform" },
-    { x: 7970, y: 1000, width: 160, height: 20, type: "platform" },
+    { x: 7050, y: 1000, width: 220, height: 20, type: "platform" }, // LENGTHENED: was 160, now 220
+    { x: 7280, y: 950, width: 220, height: 20, type: "platform" },  // LENGTHENED: was 160, now 220
+    { x: 7510, y: 1000, width: 220, height: 20, type: "platform" }, // LENGTHENED: was 160, now 220
+    { x: 7740, y: 950, width: 220, height: 20, type: "platform" },  // LENGTHENED: was 160, now 220
+    { x: 7970, y: 1000, width: 220, height: 20, type: "platform" }, // LENGTHENED: was 160, now 220
     { x: 8200, y: 1050, width: 200, height: 30, type: "ground" },
 
     // SECTION 11: PRE-BOSS TENSION BUILDER (80-85%)
@@ -139,26 +139,26 @@ const LEVEL_1 = {
       },
     },
 
-    // SECTION 5: FIRST SPIKE ROLLERS (On their own platforms - can be avoided)
+    // SECTION 5: FIRST SPIKE ROLLERS (On LONGER platforms - easier to navigate)
     {
-      x: 3050,
+      x: 3100, // Moved slightly right on longer platform
       y: 270,
       type: "spikeRoller",
       config: {
         platformStart: 3050,
-        platformEnd: 3200,
-        speed: 2.5,
+        platformEnd: 3250, // EXPANDED: now can patrol 200px instead of 150px
+        speed: 2.0, // SLOWER: reduced from 2.5 to 2.0
         direction: 1,
       },
     },
     {
-      x: 3250,
+      x: 3300, // Moved slightly right on longer platform
       y: 220,
       type: "spikeRoller",
       config: {
         platformStart: 3250,
-        platformEnd: 3400,
-        speed: 2.2,
+        platformEnd: 3450, // EXPANDED: now can patrol 200px instead of 150px
+        speed: 1.8, // SLOWER: reduced from 2.2 to 1.8
         direction: -1,
       },
     },
@@ -209,59 +209,59 @@ const LEVEL_1 = {
       },
     },
 
-    // SECTION 10: SPIKE GAUNTLET SUPREME - Challenging but fair
+    // SECTION 10: SPIKE GAUNTLET SUPREME - LONGER PLATFORMS, SLOWER SPIKES
     {
-      x: 7050,
+      x: 7100, // Centered on longer platform
       y: 970,
       type: "spikeRoller",
       config: {
         platformStart: 7050,
-        platformEnd: 7210,
-        speed: 2.8,
+        platformEnd: 7250, // EXPANDED: 200px patrol area (was 160px)
+        speed: 2.2, // SLOWER: reduced from 2.8 to 2.2
         direction: 1,
       },
     },
     {
-      x: 7280,
+      x: 7330, // Centered on longer platform
       y: 920,
       type: "spikeRoller",
       config: {
         platformStart: 7280,
-        platformEnd: 7440,
-        speed: 2.5,
+        platformEnd: 7480, // EXPANDED: 200px patrol area (was 160px)
+        speed: 2.0, // SLOWER: reduced from 2.5 to 2.0
         direction: -1,
       },
     },
     {
-      x: 7510,
+      x: 7560, // Centered on longer platform
       y: 970,
       type: "spikeRoller",
       config: {
         platformStart: 7510,
-        platformEnd: 7670,
-        speed: 3.0,
+        platformEnd: 7710, // EXPANDED: 200px patrol area (was 160px)
+        speed: 2.4, // SLOWER: reduced from 3.0 to 2.4
         direction: 1,
       },
     },
     {
-      x: 7740,
+      x: 7790, // Centered on longer platform
       y: 920,
       type: "spikeRoller",
       config: {
         platformStart: 7740,
-        platformEnd: 7900,
-        speed: 2.7,
+        platformEnd: 7940, // EXPANDED: 200px patrol area (was 160px)
+        speed: 2.1, // SLOWER: reduced from 2.7 to 2.1
         direction: -1,
       },
     },
     {
-      x: 7970,
+      x: 8020, // Centered on longer platform
       y: 970,
       type: "spikeRoller",
       config: {
         platformStart: 7970,
-        platformEnd: 8130,
-        speed: 2.9,
+        platformEnd: 8170, // EXPANDED: 200px patrol area (was 160px)
+        speed: 2.3, // SLOWER: reduced from 2.9 to 2.3
         direction: 1,
       },
     },
@@ -397,16 +397,16 @@ const LEVEL_1 = {
   },
   // PROGRESS TRACKING
   progressMarkers: {
-    0: 0, // Start
-    1400: 15, // After first challenges
-    2600: 35, // Before first spike area
-    3750: 45, // First checkpoint
-    5100: 65, // After descent
-    6700: 70, // Second checkpoint
-    8200: 80, // After spike gauntlet
-    9650: 85, // Boss arena entrance
+    0: 0,      // Start
+    1400: 15,  // After first challenges
+    2600: 35,  // Before first spike area
+    3750: 45,  // First checkpoint
+    5100: 65,  // After descent
+    6700: 70,  // Second checkpoint
+    8200: 80,  // After spike gauntlet
+    9650: 85,  // Boss arena entrance
     10050: 90, // Boss fight starts
     11550: 99, // Boss defeated, victory lap
-    11800: 100, // Goal reached
-  },
+    11800: 100 // Goal reached
+  }
 };
