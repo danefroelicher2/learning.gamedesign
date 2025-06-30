@@ -66,7 +66,7 @@ class Player {
     this.checkCannoneerCollisions();
     this.checkBossJumpAttack();
     this.checkBossArenaBounds(canvas);
-    this.checkCheckpoint(); // New: Check for checkpoint
+    this.checkCheckpoints(); // ENHANCED: Check for multiple checkpoints
     this.checkBounds();
     this.checkFallReset();
     this.checkGoalReached();
@@ -83,7 +83,7 @@ class Player {
     const level = levelManager.getCurrentLevel();
     if (!level) return;
 
-    // Check respawn priority: Boss Arena > Checkpoint > Level Start
+    // ENHANCED: Multi-checkpoint respawn priority: Boss Arena > Second Checkpoint > First Checkpoint > Level Start
     if (
       level.bossArena &&
       level.bossArena.triggered &&
@@ -92,38 +92,62 @@ class Player {
       // Respawn at boss arena entrance (if in boss fight)
       this.setPosition(level.bossArena.respawnX, level.bossArena.respawnY);
       console.log("Player respawned at boss arena!");
+    } else if (level.secondCheckpointReached) {
+      // Respawn at second checkpoint (if reached)
+      this.setPosition(
+        level.secondCheckpointPosition.x,
+        level.secondCheckpointPosition.y
+      );
+      console.log("Player respawned at second checkpoint!");
     } else if (level.checkpointReached) {
-      // Respawn at checkpoint (if checkpoint reached)
+      // Respawn at first checkpoint (if reached)
       this.setPosition(level.checkpointPosition.x, level.checkpointPosition.y);
-      console.log("Player respawned at checkpoint!");
+      console.log("Player respawned at first checkpoint!");
     } else {
       // Normal respawn at level start
       this.setPosition(level.playerStart.x, level.playerStart.y);
-      // Reset checkpoint when going back to start
-      level.checkpointReached = false;
       console.log("Player respawned at level start!");
     }
   }
 
-  checkCheckpoint() {
+  checkCheckpoints() {
     const level = levelManager.getCurrentLevel();
-    if (!level || !level.collectibles || level.checkpointReached) return;
+    if (!level || !level.collectibles) return;
 
-    // Look for checkpoint collectible
+    // Check all checkpoint collectibles
     for (let collectible of level.collectibles) {
       if (collectible.type === "checkpoint") {
         if (this.checkCollision(collectible)) {
-          // Activate checkpoint
-          level.checkpointReached = true;
-          console.log("Checkpoint reached! Future respawns will be here.");
+          // Determine which checkpoint this is based on position
+          if (collectible.x < 5000) {
+            // First checkpoint
+            if (!level.checkpointReached) {
+              level.checkpointReached = true;
+              console.log("First checkpoint reached!");
 
-          // Visual/audio feedback could be added here
-          deathCounter.updateLevelHeader(level.name + " - Checkpoint Reached!");
-          setTimeout(() => {
-            deathCounter.updateLevelHeader(level.name);
-          }, 2000);
+              // Visual feedback
+              deathCounter.updateLevelHeader(
+                level.name + " - Checkpoint 1 Reached!"
+              );
+              setTimeout(() => {
+                deathCounter.updateLevelHeader(level.name);
+              }, 2000);
+            }
+          } else {
+            // Second checkpoint
+            if (!level.secondCheckpointReached) {
+              level.secondCheckpointReached = true;
+              console.log("Second checkpoint reached!");
 
-          break;
+              // Visual feedback
+              deathCounter.updateLevelHeader(
+                level.name + " - Checkpoint 2 Reached!"
+              );
+              setTimeout(() => {
+                deathCounter.updateLevelHeader(level.name);
+              }, 2000);
+            }
+          }
         }
       }
     }
@@ -310,8 +334,8 @@ class Player {
 
   checkFallReset() {
     // Only kill player if they fall WAY off the level (much more lenient for deep descent)
-    if (this.y > 1200) {
-      // Increased from 600 to 1200 to allow deep descent
+    if (this.y > 1400) {
+      // Increased from 1200 to 1400 to accommodate the larger level
       this.die();
     }
   }
@@ -323,6 +347,10 @@ class Player {
     const goal = currentLevel.goal;
     if (this.checkCollision(goal)) {
       console.log("Goal reached!");
+      // Set progress to 100% when goal is reached
+      if (levelManager) {
+        levelManager.currentProgress = 100;
+      }
       gameStateManager.completeLevel();
     }
   }

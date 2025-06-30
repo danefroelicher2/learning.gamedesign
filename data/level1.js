@@ -1,187 +1,421 @@
-// Level 1: The Pound - Checkpoint Flag and Reworked Spike Section
+// Level 1: The Pound - ENHANCED EPIC VERSION
 const LEVEL_1 = {
   id: 1,
   name: "Level 1 - The Pound",
   platforms: [
-    // SECTION 1: Original starting area
+    // SECTION 1: TUTORIAL AREA - Easy introduction (0-5%)
     { x: 0, y: 370, width: 200, height: 30, type: "ground" },
-    { x: 300, y: 320, width: 150, height: 20, type: "platform" },
-    { x: 550, y: 270, width: 150, height: 20, type: "platform" },
+    { x: 250, y: 320, width: 100, height: 20, type: "platform" },
+    { x: 400, y: 280, width: 100, height: 20, type: "platform" },
+    { x: 550, y: 240, width: 100, height: 20, type: "platform" },
 
-    // SECTION 2: After first cannoneer - transition platform
-    { x: 800, y: 320, width: 100, height: 20, type: "platform" },
+    // SECTION 2: FIRST CHALLENGE - Cannoneer introduction (5-15%)
+    { x: 700, y: 300, width: 120, height: 20, type: "platform" },
+    { x: 900, y: 280, width: 80, height: 20, type: "platform" },
+    { x: 1050, y: 240, width: 80, height: 20, type: "platform" },
+    { x: 1200, y: 200, width: 100, height: 20, type: "platform" },
 
-    // SECTION 3: The 3-jump ASCENDING challenge with two cannoneers
-    { x: 1000, y: 280, width: 80, height: 20, type: "platform" }, // Jump 1
-    { x: 1180, y: 240, width: 80, height: 20, type: "platform" }, // Jump 2
-    { x: 1360, y: 200, width: 80, height: 20, type: "platform" }, // Jump 3
+    // SECTION 3: PRECISION JUMPING GAUNTLET (15-25%)
+    { x: 1400, y: 280, width: 60, height: 15, type: "platform" }, // Smaller platforms
+    { x: 1520, y: 320, width: 60, height: 15, type: "platform" },
+    { x: 1640, y: 260, width: 60, height: 15, type: "platform" },
+    { x: 1760, y: 300, width: 60, height: 15, type: "platform" },
+    { x: 1880, y: 240, width: 80, height: 20, type: "platform" },
 
-    // SECTION 4: Landing platform after the 3 jumps (SHORTENED FOR BREATHER)
-    { x: 1540, y: 350, width: 80, height: 20, type: "platform" }, // Player is here at y: 350
+    // SECTION 4: MOVING PLATFORM SIMULATION (Static but positioned like moving) (25-35%)
+    { x: 2000, y: 350, width: 80, height: 15, type: "platform" },
+    { x: 2150, y: 280, width: 80, height: 15, type: "platform" },
+    { x: 2300, y: 350, width: 80, height: 15, type: "platform" },
+    { x: 2450, y: 220, width: 80, height: 15, type: "platform" },
+    { x: 2600, y: 320, width: 100, height: 20, type: "platform" },
 
-    // SECTION 5: DEEP PIT DESCENT (Going WAY below screen level)
-    { x: 1700, y: 420, width: 100, height: 20, type: "platform" }, // Platform 1: 70px down
-    { x: 1850, y: 490, width: 100, height: 20, type: "platform" }, // Platform 2: 70px down
-    { x: 2000, y: 560, width: 100, height: 20, type: "platform" }, // Platform 3: 70px down
-    { x: 2150, y: 630, width: 100, height: 20, type: "platform" }, // Platform 4: 70px down (below normal screen)
-    { x: 2300, y: 700, width: 100, height: 20, type: "platform" }, // Platform 5: 70px down (deep below)
-    { x: 2450, y: 770, width: 100, height: 20, type: "platform" }, // Platform 6: 70px down (deeper)
-    { x: 2600, y: 840, width: 100, height: 20, type: "platform" }, // Platform 7: 70px down (very deep)
-    { x: 2750, y: 910, width: 100, height: 20, type: "platform" }, // Platform 8: 70px down (extremely deep)
-    { x: 2900, y: 980, width: 100, height: 20, type: "platform" }, // Platform 9: 70px down (deepest pit)
-    { x: 3050, y: 1050, width: 100, height: 20, type: "platform" }, // Platform 10: 70px down (bottom of pit)
+    // SECTION 5: SPIKE ROLLER INTRODUCTION (35-40%)
+    { x: 2800, y: 350, width: 200, height: 30, type: "ground" },
+    { x: 3050, y: 300, width: 150, height: 20, type: "platform" },
+    { x: 3250, y: 250, width: 150, height: 20, type: "platform" },
 
-    // SECTION 6: CHECKPOINT AREA (Safe zone after descent)
-    { x: 3250, y: 1050, width: 300, height: 30, type: "ground" }, // Checkpoint platform (larger safe area)
+    // SECTION 6: FIRST CHECKPOINT AREA (40-45%)
+    { x: 3500, y: 350, width: 250, height: 30, type: "ground" }, // Safe area
 
-    // SECTION 7: REWORKED SPIKE ROLLER CHALLENGE AREA (Larger platforms, easier navigation)
-    { x: 3650, y: 1050, width: 200, height: 30, type: "ground" }, // Entry to spike area
-    { x: 3950, y: 1000, width: 200, height: 20, type: "platform" }, // Spike platform 1 (larger)
-    { x: 4250, y: 950, width: 200, height: 20, type: "platform" }, // Spike platform 2 (larger)
-    { x: 4550, y: 900, width: 200, height: 20, type: "platform" }, // Spike platform 3 (larger)
-    { x: 4850, y: 950, width: 200, height: 20, type: "platform" }, // Spike platform 4 (larger)
-    { x: 5150, y: 1000, width: 200, height: 20, type: "platform" }, // Spike platform 5 (larger)
-    { x: 5450, y: 1050, width: 200, height: 30, type: "ground" }, // Exit spike area
+    // SECTION 7: THE GREAT DESCENT BEGINS (45-55%)
+    { x: 3850, y: 420, width: 90, height: 20, type: "platform" },
+    { x: 4000, y: 500, width: 90, height: 20, type: "platform" },
+    { x: 4150, y: 580, width: 90, height: 20, type: "platform" },
+    { x: 4300, y: 660, width: 90, height: 20, type: "platform" },
+    { x: 4450, y: 740, width: 90, height: 20, type: "platform" },
+    { x: 4600, y: 820, width: 90, height: 20, type: "platform" },
+    { x: 4750, y: 900, width: 90, height: 20, type: "platform" },
+    { x: 4900, y: 980, width: 90, height: 20, type: "platform" },
 
-    // SECTION 8: Transition to Boss Arena
-    { x: 5750, y: 1050, width: 300, height: 30, type: "ground" }, // Bridge to boss
+    // SECTION 8: UNDERGROUND NETWORK (55-65%)
+    { x: 5100, y: 1050, width: 300, height: 30, type: "ground" }, // Landing area
+    { x: 5500, y: 1000, width: 100, height: 20, type: "platform" },
+    { x: 5700, y: 950, width: 100, height: 20, type: "platform" },
+    { x: 5900, y: 1000, width: 100, height: 20, type: "platform" },
+    { x: 6100, y: 1050, width: 200, height: 30, type: "ground" },
 
-    // SECTION 9: BOSS ARENA (Deep underground level)
-    { x: 6150, y: 1050, width: 1200, height: 30, type: "ground" }, // Boss arena floor (deep level)
+    // SECTION 9: SECOND CHECKPOINT (65-70%)
+    { x: 6400, y: 1050, width: 300, height: 30, type: "ground" },
 
-    // SECTION 10: Final stretch to flag (after boss defeat)
-    { x: 7450, y: 1050, width: 400, height: 30, type: "ground" }, // Goal area (same deep level)
+    // SECTION 10: SPIKE GAUNTLET SUPREME (70-80%)
+    { x: 6800, y: 1050, width: 180, height: 30, type: "ground" },
+    { x: 7050, y: 1000, width: 160, height: 20, type: "platform" },
+    { x: 7280, y: 950, width: 160, height: 20, type: "platform" },
+    { x: 7510, y: 1000, width: 160, height: 20, type: "platform" },
+    { x: 7740, y: 950, width: 160, height: 20, type: "platform" },
+    { x: 7970, y: 1000, width: 160, height: 20, type: "platform" },
+    { x: 8200, y: 1050, width: 200, height: 30, type: "ground" },
+
+    // SECTION 11: PRE-BOSS TENSION BUILDER (80-85%)
+    { x: 8500, y: 1050, width: 150, height: 30, type: "ground" },
+    { x: 8750, y: 1000, width: 100, height: 20, type: "platform" },
+    { x: 8950, y: 950, width: 100, height: 20, type: "platform" },
+    { x: 9150, y: 1000, width: 100, height: 20, type: "platform" },
+    { x: 9350, y: 1050, width: 200, height: 30, type: "ground" },
+
+    // SECTION 12: BOSS ARENA ENTRANCE (85-90%)
+    { x: 9650, y: 1050, width: 300, height: 30, type: "ground" },
+
+    // SECTION 13: IRON GIANT BOSS ARENA (90-99%)
+    { x: 10050, y: 1050, width: 1400, height: 30, type: "ground" }, // Massive boss arena
+
+    // SECTION 14: VICTORY LAP (99-100%)
+    { x: 11550, y: 1050, width: 400, height: 30, type: "ground" },
   ],
   mobs: [
-    // SECTION 3: BEGINNING CANNONEERS (KEPT - these stay as they are)
+    // SECTION 2: TUTORIAL CANNONEERS (Slower, easier)
     {
-      x: 650,
-      y: 240,
-      type: "cannoneer",
-      config: {
-        direction: -1,
-        fireRate: 3000,
-        range: 600,
-      },
-    },
-    {
-      x: 1100,
+      x: 850,
       y: 250,
       type: "cannoneer",
       config: {
         direction: -1,
-        fireRate: 2500,
+        fireRate: 4000, // Slower for tutorial
         range: 400,
       },
     },
+
+    // SECTION 3: PRECISION GAUNTLET CANNONEERS
     {
-      x: 1280,
-      y: 170,
+      x: 1300,
+      y: 150,
       type: "cannoneer",
       config: {
         direction: -1,
+        fireRate: 3000,
+        range: 500,
+      },
+    },
+    {
+      x: 1580,
+      y: 200,
+      type: "cannoneer",
+      config: {
+        direction: 1, // Shooting right
         fireRate: 2800,
-        range: 350,
+        range: 400,
       },
     },
 
-    // SECTION 5: DEEP PIT DESCENT CANNONEERS - REMOVED AS REQUESTED
-    // All 8 upward-shooting cannoneers from the descent section have been removed
-    // This makes the descent more about platforming skill rather than dodging projectiles
-
-    // SECTION 7: SPIKE ROLLER MOBS (All 5 should now move properly)
+    // SECTION 4: CROSSFIRE CANNONEERS
     {
-      x: 3950,
-      y: 970, // On larger spike platform 1
+      x: 2100,
+      y: 180,
+      type: "cannoneer",
+      config: {
+        direction: -1,
+        fireRate: 2500,
+        range: 600,
+      },
+    },
+    {
+      x: 2550,
+      y: 120,
+      type: "cannoneer",
+      config: {
+        direction: -1,
+        fireRate: 2200,
+        range: 500,
+      },
+    },
+
+    // SECTION 5: FIRST SPIKE ROLLERS
+    {
+      x: 3050,
+      y: 270,
       type: "spikeRoller",
       config: {
-        platformStart: 3950,
-        platformEnd: 4150, // Larger patrol area
-        speed: 2, // Slower speed
+        platformStart: 3050,
+        platformEnd: 3200,
+        speed: 2.5,
         direction: 1,
       },
     },
     {
-      x: 4250,
-      y: 920, // On larger spike platform 2
+      x: 3250,
+      y: 220,
       type: "spikeRoller",
       config: {
-        platformStart: 4250,
-        platformEnd: 4450, // Larger patrol area
-        speed: 1.8, // Slower speed
+        platformStart: 3250,
+        platformEnd: 3400,
+        speed: 2.2,
+        direction: -1,
+      },
+    },
+
+    // SECTION 7: DESCENT WATCHERS (Cannoneers positioned to guard descent)
+    {
+      x: 3700,
+      y: 200,
+      type: "cannoneer",
+      config: {
+        direction: 1,
+        fireRate: 3500,
+        range: 800,
+      },
+    },
+    {
+      x: 4050,
+      y: 1100, // At bottom shooting up
+      type: "cannoneer",
+      config: {
+        direction: 1,
+        fireRate: 2000,
+        range: 600,
+        shootUp: true,
+      },
+    },
+    {
+      x: 4200,
+      y: 1100,
+      type: "cannoneer",
+      config: {
+        direction: 1,
+        fireRate: 2400,
+        range: 600,
+        shootUp: true,
+      },
+    },
+    {
+      x: 4350,
+      y: 1100,
+      type: "cannoneer",
+      config: {
+        direction: 1,
+        fireRate: 1800,
+        range: 600,
+        shootUp: true,
+      },
+    },
+
+    // SECTION 8: UNDERGROUND DEFENDERS
+    {
+      x: 5550,
+      y: 970,
+      type: "spikeRoller",
+      config: {
+        platformStart: 5500,
+        platformEnd: 5600,
+        speed: 3,
+        direction: 1,
+      },
+    },
+    {
+      x: 5700,
+      y: 920,
+      type: "spikeRoller",
+      config: {
+        platformStart: 5700,
+        platformEnd: 5800,
+        speed: 2.8,
         direction: -1,
       },
     },
     {
-      x: 4550,
-      y: 870, // On larger spike platform 3
+      x: 5950,
+      y: 970,
+      type: "cannoneer",
+      config: {
+        direction: -1,
+        fireRate: 2000,
+        range: 400,
+      },
+    },
+
+    // SECTION 10: SPIKE GAUNTLET SUPREME - The real challenge
+    {
+      x: 7050,
+      y: 970,
       type: "spikeRoller",
       config: {
-        platformStart: 4550,
-        platformEnd: 4750, // Larger patrol area
-        speed: 2.2, // Slower speed
+        platformStart: 7050,
+        platformEnd: 7210,
+        speed: 3.2,
         direction: 1,
       },
     },
     {
-      x: 4850,
-      y: 920, // On larger spike platform 4
+      x: 7280,
+      y: 920,
       type: "spikeRoller",
       config: {
-        platformStart: 4850,
-        platformEnd: 5050, // Larger patrol area
-        speed: 1.9, // Slower speed
+        platformStart: 7280,
+        platformEnd: 7440,
+        speed: 2.9,
         direction: -1,
       },
     },
     {
-      x: 5150,
-      y: 970, // On larger spike platform 5
+      x: 7510,
+      y: 970,
       type: "spikeRoller",
       config: {
-        platformStart: 5150,
-        platformEnd: 5350, // Larger patrol area
-        speed: 2.1, // Slower speed
+        platformStart: 7510,
+        platformEnd: 7670,
+        speed: 3.5,
+        direction: 1,
+      },
+    },
+    {
+      x: 7740,
+      y: 920,
+      type: "spikeRoller",
+      config: {
+        platformStart: 7740,
+        platformEnd: 7900,
+        speed: 3.1,
+        direction: -1,
+      },
+    },
+    {
+      x: 7970,
+      y: 970,
+      type: "spikeRoller",
+      config: {
+        platformStart: 7970,
+        platformEnd: 8130,
+        speed: 3.3,
         direction: 1,
       },
     },
 
-    // SECTION 9: BOSS MOB - Iron Giant (Deep underground boss arena)
+    // SECTION 11: PRE-BOSS FINAL CHALLENGE
     {
-      x: 6700,
-      y: 1000, // In the deep boss arena
+      x: 8800,
+      y: 970,
+      type: "cannoneer",
+      config: {
+        direction: -1,
+        fireRate: 1500, // Fast firing
+        range: 600,
+      },
+    },
+    {
+      x: 9000,
+      y: 920,
+      type: "cannoneer",
+      config: {
+        direction: 1,
+        fireRate: 1600,
+        range: 500,
+      },
+    },
+    {
+      x: 9200,
+      y: 970,
+      type: "spikeRoller",
+      config: {
+        platformStart: 9150,
+        platformEnd: 9250,
+        speed: 4, // Fastest spike roller
+        direction: -1,
+      },
+    },
+
+    // SECTION 13: THE IRON GIANT BOSS
+    {
+      x: 10600,
+      y: 1000,
       type: "ironGiant",
       config: {
-        health: 3,
-        patrolDistance: 600,
-        attackRate: 1500,
+        health: 5, // Increased health for enhanced difficulty
+        patrolDistance: 800, // Larger patrol area
+        attackRate: 1200, // Faster attacks
         isBoss: true,
+      },
+    },
+
+    // SECTION 13: BOSS ARENA MINIONS (Spawn during boss fight)
+    {
+      x: 10200,
+      y: 1020,
+      type: "spikeRoller",
+      config: {
+        platformStart: 10100,
+        platformEnd: 10300,
+        speed: 2,
+        direction: 1,
+      },
+    },
+    {
+      x: 11200,
+      y: 1020,
+      type: "spikeRoller",
+      config: {
+        platformStart: 11100,
+        platformEnd: 11300,
+        speed: 2,
+        direction: -1,
       },
     },
   ],
   collectibles: [
-    // CHECKPOINT FLAG (after descent, before spikes)
+    // FIRST CHECKPOINT (After spike introduction)
     {
-      x: 3400,
+      x: 3600,
+      y: 310,
+      type: "checkpoint",
+      width: 30,
+      height: 40,
+    },
+    // SECOND CHECKPOINT (After descent)
+    {
+      x: 6500,
       y: 1010,
       type: "checkpoint",
       width: 30,
       height: 40,
     },
   ],
-  goal: { x: 7800, y: 1020, width: 30, height: 30 }, // Goal at deep level after boss
+  goal: { x: 11800, y: 1020, width: 30, height: 30 },
   playerStart: { x: 50, y: 300 },
-  checkpointReached: false, // Track if checkpoint has been reached
-  checkpointPosition: { x: 3400, y: 1000 }, // Where to respawn after checkpoint
+  checkpointReached: false,
+  checkpointPosition: { x: 3600, y: 300 }, // First checkpoint position
+  secondCheckpointReached: false, // New: track second checkpoint
+  secondCheckpointPosition: { x: 6500, y: 1000 }, // Second checkpoint position
   bossArena: {
-    x: 6150, // Boss arena start (deep underground)
-    width: 1200, // Large width to cover full screen
-    respawnX: 6250, // Respawn inside the deep arena
-    respawnY: 1000, // Respawn Y position (deep level)
+    x: 10050,
+    width: 1400,
+    respawnX: 10150,
+    respawnY: 1000,
     triggered: false,
   },
   background: {
     color1: "#87CEEB", // Sky blue
-    color2: "#98FB98", // Light green
+    color2: "#2c3e50", // Dark blue-gray (more ominous as you descend)
+  },
+  // PROGRESS TRACKING
+  progressMarkers: {
+    0: 0, // Start
+    1400: 15, // After first challenges
+    2600: 35, // Before first spike area
+    3750: 45, // First checkpoint
+    5100: 65, // After descent
+    6700: 70, // Second checkpoint
+    8200: 80, // After spike gauntlet
+    9650: 85, // Boss arena entrance
+    10050: 90, // Boss fight starts
+    11550: 99, // Boss defeated, victory lap
+    11800: 100, // Goal reached
   },
 };
