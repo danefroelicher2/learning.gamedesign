@@ -83,44 +83,44 @@ const LEVEL_1 = {
     { x: 11550, y: 1050, width: 400, height: 30, type: "ground" },
   ],
   mobs: [
-    // SECTION 2: TUTORIAL CANNONEERS (Positioned to be avoidable)
+    // SECTION 2: TUTORIAL CANNONEERS (On RIGHT side of platforms - can jump over)
     {
-      x: 780, // Moved further back, can jump over on platform at x:700
-      y: 200, // Higher up so player can duck under on lower platforms
+      x: 870, // On platform at x:700, width:120 - positioned at RIGHT end so player can land LEFT and jump over
+      y: 270, // On the platform
       type: "cannoneer",
       config: {
         direction: -1,
         fireRate: 4000, // Slower for tutorial
-        range: 300, // Reduced range
+        range: 300,
       },
     },
 
     // SECTION 3: PRECISION GAUNTLET CANNONEERS (Better positioning)
     {
-      x: 1100, // On platform at x:1200, shoot left - can avoid by staying low
-      y: 150, // High up
+      x: 1270, // On platform at x:1200, width:100 - positioned at RIGHT end
+      y: 170, // On the platform
       type: "cannoneer",
       config: {
         direction: -1,
         fireRate: 3000,
-        range: 350, // Reduced range
+        range: 350,
       },
     },
     {
-      x: 1750, // Between platforms - can avoid by timing jumps
-      y: 380, // Ground level, but with gap to jump over
+      x: 1940, // On platform at x:1880, width:80 - positioned at RIGHT end
+      y: 210, // On the platform
       type: "cannoneer",
       config: {
-        direction: 1, // Shooting right
-        fireRate: 3500, // Slower
+        direction: -1,
+        fireRate: 3500,
         range: 300,
       },
     },
 
-    // SECTION 4: CROSSFIRE CANNONEERS (Positioned with escape routes)
+    // SECTION 4: CROSSFIRE CANNONEERS (In empty space between platforms)
     {
-      x: 2050, // On high platform, shoots over lower path
-      y: 180,
+      x: 2120, // Between platforms - in empty space, can jump over
+      y: 380, // Ground level
       type: "cannoneer",
       config: {
         direction: -1,
@@ -129,8 +129,8 @@ const LEVEL_1 = {
       },
     },
     {
-      x: 2350, // Ground level but with platform above to hide
-      y: 380,
+      x: 2680, // On platform at x:2600, width:100 - positioned at RIGHT end
+      y: 290, // On the platform
       type: "cannoneer",
       config: {
         direction: -1,
@@ -163,18 +163,17 @@ const LEVEL_1 = {
       },
     },
 
-    // SECTION 7: DESCENT WATCHERS (Positioned to guard but allow passage)
+    // SECTION 7: DESCENT WATCHERS (In empty space - can jump over)
     {
-      x: 3600, // Before descent starts, on higher ground
-      y: 250,
+      x: 3300, // In empty space before descent
+      y: 380, // Ground level
       type: "cannoneer",
       config: {
         direction: 1,
         fireRate: 4000, // Slower to allow passage
-        range: 500,
+        range: 400,
       },
     },
-    // REMOVED: The upward shooting cannoneers during descent - they were too hard to avoid
 
     // SECTION 8: UNDERGROUND DEFENDERS (Better spacing)
     {
@@ -184,7 +183,7 @@ const LEVEL_1 = {
       config: {
         platformStart: 5500,
         platformEnd: 5600,
-        speed: 2.5, // Slower
+        speed: 2.5,
         direction: 1,
       },
     },
@@ -195,13 +194,13 @@ const LEVEL_1 = {
       config: {
         platformStart: 5700,
         platformEnd: 5800,
-        speed: 2.3, // Slower
+        speed: 2.3,
         direction: -1,
       },
     },
     {
-      x: 6000, // Moved further right, away from platforms
-      y: 1100, // Ground level
+      x: 6180, // On platform at x:6100, width:200 - positioned at RIGHT end
+      y: 1020, // On the platform
       type: "cannoneer",
       config: {
         direction: -1,
@@ -218,7 +217,7 @@ const LEVEL_1 = {
       config: {
         platformStart: 7050,
         platformEnd: 7210,
-        speed: 2.8, // Reduced speed
+        speed: 2.8,
         direction: 1,
       },
     },
@@ -229,7 +228,7 @@ const LEVEL_1 = {
       config: {
         platformStart: 7280,
         platformEnd: 7440,
-        speed: 2.5, // Reduced speed
+        speed: 2.5,
         direction: -1,
       },
     },
@@ -240,7 +239,7 @@ const LEVEL_1 = {
       config: {
         platformStart: 7510,
         platformEnd: 7670,
-        speed: 3.0, // Reduced speed
+        speed: 3.0,
         direction: 1,
       },
     },
@@ -251,7 +250,7 @@ const LEVEL_1 = {
       config: {
         platformStart: 7740,
         platformEnd: 7900,
-        speed: 2.7, // Reduced speed
+        speed: 2.7,
         direction: -1,
       },
     },
@@ -262,29 +261,29 @@ const LEVEL_1 = {
       config: {
         platformStart: 7970,
         platformEnd: 8130,
-        speed: 2.9, // Reduced speed
+        speed: 2.9,
         direction: 1,
       },
     },
 
-    // SECTION 11: PRE-BOSS FINAL CHALLENGE (Better positioning)
+    // SECTION 11: PRE-BOSS FINAL CHALLENGE (In empty space)
     {
-      x: 8600, // Away from platforms
-      y: 1100, // Ground level
+      x: 8300, // In empty space between platforms
+      y: 1080, // Ground level
       type: "cannoneer",
       config: {
         direction: -1,
-        fireRate: 2500, // Slower
+        fireRate: 2500,
         range: 400,
       },
     },
     {
-      x: 9000, // On platform but with timing window
-      y: 920,
+      x: 9030, // On platform at x:8950, width:100 - positioned at RIGHT end
+      y: 920, // On the platform
       type: "cannoneer",
       config: {
         direction: 1,
-        fireRate: 3000, // Slower
+        fireRate: 3000,
         range: 350,
       },
     },
@@ -295,7 +294,7 @@ const LEVEL_1 = {
       config: {
         platformStart: 9150,
         platformEnd: 9250,
-        speed: 3.2, // Manageable speed
+        speed: 3.2,
         direction: -1,
       },
     },
