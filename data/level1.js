@@ -16,11 +16,11 @@ const LEVEL_1 = {
     { x: 1200, y: 200, width: 100, height: 20, type: "platform" },
 
     // SECTION 3: PRECISION JUMPING GAUNTLET (15-25%)
-    { x: 1400, y: 280, width: 60, height: 15, type: "platform" },  // Smaller platforms
+    { x: 1400, y: 280, width: 60, height: 15, type: "platform" }, // Smaller platforms
     { x: 1520, y: 320, width: 60, height: 15, type: "platform" },
-    { x: 1640, y: 300, width: 60, height: 15, type: "platform" },  // FIXED: Lowered from 280 to 300 (more reachable)
-    { x: 1760, y: 320, width: 60, height: 15, type: "platform" },  // FIXED: Lowered from 300 to 320
-    { x: 1880, y: 280, width: 80, height: 20, type: "platform" },  // FIXED: Raised from 240 to 280
+    { x: 1640, y: 300, width: 60, height: 15, type: "platform" }, // FIXED: Lowered from 280 to 300 (more reachable)
+    { x: 1760, y: 320, width: 60, height: 15, type: "platform" }, // FIXED: Lowered from 300 to 320
+    { x: 1880, y: 280, width: 80, height: 20, type: "platform" }, // FIXED: Raised from 240 to 280
 
     // SECTION 4: MOVING PLATFORM SIMULATION (Static but positioned like moving) (25-35%)
     { x: 2000, y: 350, width: 80, height: 15, type: "platform" },
@@ -47,11 +47,11 @@ const LEVEL_1 = {
     { x: 4750, y: 900, width: 90, height: 20, type: "platform" },
     { x: 4900, y: 980, width: 90, height: 20, type: "platform" },
 
-    // SECTION 8: UNDERGROUND NETWORK (55-65%)
+    // SECTION 8: UNDERGROUND NETWORK (55-65%) - MUCH LONGER PLATFORMS
     { x: 5100, y: 1050, width: 300, height: 30, type: "ground" }, // Landing area
-    { x: 5500, y: 1000, width: 100, height: 20, type: "platform" },
-    { x: 5700, y: 950, width: 100, height: 20, type: "platform" },
-    { x: 5900, y: 1000, width: 100, height: 20, type: "platform" },
+    { x: 5500, y: 1000, width: 200, height: 20, type: "platform" }, // LENGTHENED: was 100, now 200
+    { x: 5700, y: 950, width: 200, height: 20, type: "platform" }, // LENGTHENED: was 100, now 200
+    { x: 5900, y: 1000, width: 200, height: 20, type: "platform" }, // LENGTHENED: was 100, now 200
     { x: 6100, y: 1050, width: 200, height: 30, type: "ground" },
 
     // SECTION 9: SECOND CHECKPOINT (65-70%)
@@ -60,9 +60,9 @@ const LEVEL_1 = {
     // SECTION 10: SPIKE GAUNTLET SUPREME - MUCH LONGER PLATFORMS (70-80%)
     { x: 6800, y: 1050, width: 180, height: 30, type: "ground" },
     { x: 7050, y: 1000, width: 220, height: 20, type: "platform" }, // LENGTHENED: was 160, now 220
-    { x: 7280, y: 950, width: 220, height: 20, type: "platform" },  // LENGTHENED: was 160, now 220
+    { x: 7280, y: 950, width: 220, height: 20, type: "platform" }, // LENGTHENED: was 160, now 220
     { x: 7510, y: 1000, width: 220, height: 20, type: "platform" }, // LENGTHENED: was 160, now 220
-    { x: 7740, y: 950, width: 220, height: 20, type: "platform" },  // LENGTHENED: was 160, now 220
+    { x: 7740, y: 950, width: 220, height: 20, type: "platform" }, // LENGTHENED: was 160, now 220
     { x: 7970, y: 1000, width: 220, height: 20, type: "platform" }, // LENGTHENED: was 160, now 220
     { x: 8200, y: 1050, width: 200, height: 30, type: "ground" },
 
@@ -175,26 +175,26 @@ const LEVEL_1 = {
       },
     },
 
-    // SECTION 8: UNDERGROUND DEFENDERS (Better spacing)
+    // SECTION 8: UNDERGROUND DEFENDERS (MUCH SLOWER & LARGER PLATFORMS)
     {
-      x: 5550,
+      x: 5550, // Centered on longer platform
       y: 970,
       type: "spikeRoller",
       config: {
         platformStart: 5500,
-        platformEnd: 5600,
-        speed: 2.5,
+        platformEnd: 5650, // EXPANDED: 150px patrol area (was 100px)
+        speed: 1.5, // MUCH SLOWER: reduced from 2.5 to 1.5
         direction: 1,
       },
     },
     {
-      x: 5700,
+      x: 5750, // Centered on longer platform
       y: 920,
       type: "spikeRoller",
       config: {
         platformStart: 5700,
-        platformEnd: 5800,
-        speed: 2.3,
+        platformEnd: 5850, // EXPANDED: 150px patrol area (was 100px)
+        speed: 1.3, // MUCH SLOWER: reduced from 2.3 to 1.3
         direction: -1,
       },
     },
@@ -397,16 +397,16 @@ const LEVEL_1 = {
   },
   // PROGRESS TRACKING
   progressMarkers: {
-    0: 0,      // Start
-    1400: 15,  // After first challenges
-    2600: 35,  // Before first spike area
-    3750: 45,  // First checkpoint
-    5100: 65,  // After descent
-    6700: 70,  // Second checkpoint
-    8200: 80,  // After spike gauntlet
-    9650: 85,  // Boss arena entrance
+    0: 0, // Start
+    1400: 15, // After first challenges
+    2600: 35, // Before first spike area
+    3750: 45, // First checkpoint
+    5100: 65, // After descent
+    6700: 70, // Second checkpoint
+    8200: 80, // After spike gauntlet
+    9650: 85, // Boss arena entrance
     10050: 90, // Boss fight starts
     11550: 99, // Boss defeated, victory lap
-    11800: 100 // Goal reached
-  }
+    11800: 100, // Goal reached
+  },
 };
