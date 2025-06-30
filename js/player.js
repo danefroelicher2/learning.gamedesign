@@ -83,7 +83,7 @@ class Player {
     const level = levelManager.getCurrentLevel();
     if (!level) return;
 
-    // ENHANCED: Multi-checkpoint respawn priority: Boss Arena > Second Checkpoint > First Checkpoint > Level Start
+    // ENHANCED: Multi-checkpoint respawn priority: Boss Arena > Checkpoint 5 > Checkpoint 4 > Checkpoint 3 > Checkpoint 2 > Checkpoint 1 > Level Start
     if (
       level.bossArena &&
       level.bossArena.triggered &&
@@ -93,19 +93,31 @@ class Player {
       this.setPosition(level.bossArena.respawnX, level.bossArena.respawnY);
       levelManager.resetProgressOnRespawn("bossArena");
       console.log("Player respawned at boss arena!");
-    } else if (level.secondCheckpointReached) {
-      // Respawn at second checkpoint (if reached)
-      this.setPosition(
-        level.secondCheckpointPosition.x,
-        level.secondCheckpointPosition.y
-      );
-      levelManager.resetProgressOnRespawn("secondCheckpoint");
-      console.log("Player respawned at second checkpoint!");
-    } else if (level.checkpointReached) {
-      // Respawn at first checkpoint (if reached)
-      this.setPosition(level.checkpointPosition.x, level.checkpointPosition.y);
-      levelManager.resetProgressOnRespawn("firstCheckpoint");
-      console.log("Player respawned at first checkpoint!");
+    } else if (level.checkpoint5Reached) {
+      // Respawn at checkpoint 5 (after spike gauntlet)
+      this.setPosition(8300, 970);
+      levelManager.resetProgressOnRespawn("checkpoint5");
+      console.log("Player respawned at checkpoint 5!");
+    } else if (level.checkpoint4Reached) {
+      // Respawn at checkpoint 4 (after descent)
+      this.setPosition(6500, 1000);
+      levelManager.resetProgressOnRespawn("checkpoint4");
+      console.log("Player respawned at checkpoint 4!");
+    } else if (level.checkpoint3Reached) {
+      // Respawn at checkpoint 3 (after spike introduction)
+      this.setPosition(3600, 300);
+      levelManager.resetProgressOnRespawn("checkpoint3");
+      console.log("Player respawned at checkpoint 3!");
+    } else if (level.checkpoint2Reached) {
+      // Respawn at checkpoint 2 (after precision gauntlet)
+      this.setPosition(2750, 300);
+      levelManager.resetProgressOnRespawn("checkpoint2");
+      console.log("Player respawned at checkpoint 2!");
+    } else if (level.checkpoint1Reached) {
+      // Respawn at checkpoint 1 (after tutorial)
+      this.setPosition(1350, 200);
+      levelManager.resetProgressOnRespawn("checkpoint1");
+      console.log("Player respawned at checkpoint 1!");
     } else {
       // Normal respawn at level start
       this.setPosition(level.playerStart.x, level.playerStart.y);
@@ -123,11 +135,11 @@ class Player {
       if (collectible.type === "checkpoint") {
         if (this.checkCollision(collectible)) {
           // Determine which checkpoint this is based on position
-          if (collectible.x < 5000) {
-            // First checkpoint
-            if (!level.checkpointReached) {
-              level.checkpointReached = true;
-              console.log("First checkpoint reached!");
+          if (collectible.x < 1500) {
+            // Checkpoint 1 (after tutorial)
+            if (!level.checkpoint1Reached) {
+              level.checkpoint1Reached = true;
+              console.log("Checkpoint 1 reached!");
 
               // Visual feedback
               deathCounter.updateLevelHeader(
@@ -137,15 +149,57 @@ class Player {
                 deathCounter.updateLevelHeader(level.name);
               }, 2000);
             }
-          } else {
-            // Second checkpoint
-            if (!level.secondCheckpointReached) {
-              level.secondCheckpointReached = true;
-              console.log("Second checkpoint reached!");
+          } else if (collectible.x < 3000) {
+            // Checkpoint 2 (after precision gauntlet)
+            if (!level.checkpoint2Reached) {
+              level.checkpoint2Reached = true;
+              console.log("Checkpoint 2 reached!");
 
               // Visual feedback
               deathCounter.updateLevelHeader(
                 level.name + " - Checkpoint 2 Reached!"
+              );
+              setTimeout(() => {
+                deathCounter.updateLevelHeader(level.name);
+              }, 2000);
+            }
+          } else if (collectible.x < 5000) {
+            // Checkpoint 3 (after spike introduction)
+            if (!level.checkpoint3Reached) {
+              level.checkpoint3Reached = true;
+              console.log("Checkpoint 3 reached!");
+
+              // Visual feedback
+              deathCounter.updateLevelHeader(
+                level.name + " - Checkpoint 3 Reached!"
+              );
+              setTimeout(() => {
+                deathCounter.updateLevelHeader(level.name);
+              }, 2000);
+            }
+          } else if (collectible.x < 8000) {
+            // Checkpoint 4 (after descent)
+            if (!level.checkpoint4Reached) {
+              level.checkpoint4Reached = true;
+              console.log("Checkpoint 4 reached!");
+
+              // Visual feedback
+              deathCounter.updateLevelHeader(
+                level.name + " - Checkpoint 4 Reached!"
+              );
+              setTimeout(() => {
+                deathCounter.updateLevelHeader(level.name);
+              }, 2000);
+            }
+          } else {
+            // Checkpoint 5 (after spike gauntlet)
+            if (!level.checkpoint5Reached) {
+              level.checkpoint5Reached = true;
+              console.log("Checkpoint 5 reached!");
+
+              // Visual feedback
+              deathCounter.updateLevelHeader(
+                level.name + " - Checkpoint 5 Reached!"
               );
               setTimeout(() => {
                 deathCounter.updateLevelHeader(level.name);
