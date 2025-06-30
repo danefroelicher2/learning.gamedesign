@@ -94,28 +94,28 @@ class Player {
       levelManager.resetProgressOnRespawn("bossArena");
       console.log("Player respawned at boss arena!");
     } else if (level.checkpoint5Reached) {
-      // Respawn at checkpoint 5 (after spike gauntlet)
-      this.setPosition(8300, 970);
+      // Respawn at checkpoint 5 (after spike gauntlet) - ON PLATFORM
+      this.setPosition(8250, 1020); // On platform at x:8200, width:200
       levelManager.resetProgressOnRespawn("checkpoint5");
       console.log("Player respawned at checkpoint 5!");
     } else if (level.checkpoint4Reached) {
-      // Respawn at checkpoint 4 (after descent)
-      this.setPosition(6500, 1000);
+      // Respawn at checkpoint 4 (after descent) - ON PLATFORM
+      this.setPosition(6450, 1020); // On platform at x:6400, width:300
       levelManager.resetProgressOnRespawn("checkpoint4");
       console.log("Player respawned at checkpoint 4!");
     } else if (level.checkpoint3Reached) {
-      // Respawn at checkpoint 3 (after spike introduction)
-      this.setPosition(3600, 300);
+      // Respawn at checkpoint 3 (after spike introduction) - ON PLATFORM
+      this.setPosition(3550, 320); // On platform at x:3500, width:250
       levelManager.resetProgressOnRespawn("checkpoint3");
       console.log("Player respawned at checkpoint 3!");
     } else if (level.checkpoint2Reached) {
-      // Respawn at checkpoint 2 (after precision gauntlet)
-      this.setPosition(2750, 300);
+      // Respawn at checkpoint 2 (after precision gauntlet) - ON PLATFORM
+      this.setPosition(2850, 320); // On platform at x:2800, width:200
       levelManager.resetProgressOnRespawn("checkpoint2");
       console.log("Player respawned at checkpoint 2!");
     } else if (level.checkpoint1Reached) {
-      // Respawn at checkpoint 1 (after tutorial)
-      this.setPosition(1350, 200);
+      // Respawn at checkpoint 1 (after tutorial) - ON PLATFORM
+      this.setPosition(1430, 250); // On platform at x:1400, width:60
       levelManager.resetProgressOnRespawn("checkpoint1");
       console.log("Player respawned at checkpoint 1!");
     } else {
