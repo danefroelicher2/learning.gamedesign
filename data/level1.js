@@ -53,7 +53,7 @@ const LEVEL_1 = {
     { x: 7450, y: 1050, width: 400, height: 30, type: "ground" }, // Goal area (same deep level)
   ],
   mobs: [
-    // SECTION 3: Original cannoneers (ascending section)
+    // SECTION 3: BEGINNING CANNONEERS (KEPT - these stay as they are)
     {
       x: 650,
       y: 240,
@@ -85,97 +85,11 @@ const LEVEL_1 = {
       },
     },
 
-    // SECTION 5: DEEP PIT DESCENT CANNONEERS
-    {
-      x: 1775,
-      y: 1100, // Way below at bottom of pit, shooting UP
-      type: "cannoneer",
-      config: {
-        direction: 1,
-        fireRate: 2000,
-        range: 800,
-        shootUp: true,
-      },
-    },
-    {
-      x: 1925,
-      y: 1100,
-      type: "cannoneer",
-      config: {
-        direction: 1,
-        fireRate: 2400,
-        range: 800,
-        shootUp: true,
-      },
-    },
-    {
-      x: 2075,
-      y: 1100,
-      type: "cannoneer",
-      config: {
-        direction: 1,
-        fireRate: 1800,
-        range: 800,
-        shootUp: true,
-      },
-    },
-    {
-      x: 2225,
-      y: 1100,
-      type: "cannoneer",
-      config: {
-        direction: 1,
-        fireRate: 2200,
-        range: 800,
-        shootUp: true,
-      },
-    },
-    {
-      x: 2375,
-      y: 1100,
-      type: "cannoneer",
-      config: {
-        direction: 1,
-        fireRate: 1900,
-        range: 800,
-        shootUp: true,
-      },
-    },
-    {
-      x: 2525,
-      y: 1100,
-      type: "cannoneer",
-      config: {
-        direction: 1,
-        fireRate: 2100,
-        range: 800,
-        shootUp: true,
-      },
-    },
-    {
-      x: 2675,
-      y: 1100,
-      type: "cannoneer",
-      config: {
-        direction: 1,
-        fireRate: 1700,
-        range: 800,
-        shootUp: true,
-      },
-    },
-    {
-      x: 2825,
-      y: 1100,
-      type: "cannoneer",
-      config: {
-        direction: 1,
-        fireRate: 2300,
-        range: 800,
-        shootUp: true,
-      },
-    },
+    // SECTION 5: DEEP PIT DESCENT CANNONEERS - REMOVED AS REQUESTED
+    // All 8 upward-shooting cannoneers from the descent section have been removed
+    // This makes the descent more about platforming skill rather than dodging projectiles
 
-    // SECTION 7: REWORKED SPIKE ROLLER MOBS (Slower, more predictable)
+    // SECTION 7: SPIKE ROLLER MOBS (All 5 should now move properly)
     {
       x: 3950,
       y: 970, // On larger spike platform 1
