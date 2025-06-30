@@ -83,63 +83,63 @@ const LEVEL_1 = {
     { x: 11550, y: 1050, width: 400, height: 30, type: "ground" },
   ],
   mobs: [
-    // SECTION 2: TUTORIAL CANNONEERS (Slower, easier)
+    // SECTION 2: TUTORIAL CANNONEERS (Positioned to be avoidable)
     {
-      x: 850,
-      y: 250,
+      x: 780, // Moved further back, can jump over on platform at x:700
+      y: 200, // Higher up so player can duck under on lower platforms
       type: "cannoneer",
       config: {
         direction: -1,
         fireRate: 4000, // Slower for tutorial
-        range: 400,
+        range: 300, // Reduced range
       },
     },
 
-    // SECTION 3: PRECISION GAUNTLET CANNONEERS
+    // SECTION 3: PRECISION GAUNTLET CANNONEERS (Better positioning)
     {
-      x: 1300,
-      y: 150,
+      x: 1100, // On platform at x:1200, shoot left - can avoid by staying low
+      y: 150, // High up
       type: "cannoneer",
       config: {
         direction: -1,
         fireRate: 3000,
-        range: 500,
+        range: 350, // Reduced range
       },
     },
     {
-      x: 1580,
-      y: 200,
+      x: 1750, // Between platforms - can avoid by timing jumps
+      y: 380, // Ground level, but with gap to jump over
       type: "cannoneer",
       config: {
         direction: 1, // Shooting right
-        fireRate: 2800,
-        range: 400,
+        fireRate: 3500, // Slower
+        range: 300,
       },
     },
 
-    // SECTION 4: CROSSFIRE CANNONEERS
+    // SECTION 4: CROSSFIRE CANNONEERS (Positioned with escape routes)
     {
-      x: 2100,
+      x: 2050, // On high platform, shoots over lower path
       y: 180,
       type: "cannoneer",
       config: {
         direction: -1,
-        fireRate: 2500,
-        range: 600,
+        fireRate: 3000,
+        range: 400,
       },
     },
     {
-      x: 2550,
-      y: 120,
+      x: 2350, // Ground level but with platform above to hide
+      y: 380,
       type: "cannoneer",
       config: {
         direction: -1,
-        fireRate: 2200,
-        range: 500,
+        fireRate: 3200,
+        range: 350,
       },
     },
 
-    // SECTION 5: FIRST SPIKE ROLLERS
+    // SECTION 5: FIRST SPIKE ROLLERS (On their own platforms - can be avoided)
     {
       x: 3050,
       y: 270,
@@ -163,52 +163,20 @@ const LEVEL_1 = {
       },
     },
 
-    // SECTION 7: DESCENT WATCHERS (Cannoneers positioned to guard descent)
+    // SECTION 7: DESCENT WATCHERS (Positioned to guard but allow passage)
     {
-      x: 3700,
-      y: 200,
+      x: 3600, // Before descent starts, on higher ground
+      y: 250,
       type: "cannoneer",
       config: {
         direction: 1,
-        fireRate: 3500,
-        range: 800,
+        fireRate: 4000, // Slower to allow passage
+        range: 500,
       },
     },
-    {
-      x: 4050,
-      y: 1100, // At bottom shooting up
-      type: "cannoneer",
-      config: {
-        direction: 1,
-        fireRate: 2000,
-        range: 600,
-        shootUp: true,
-      },
-    },
-    {
-      x: 4200,
-      y: 1100,
-      type: "cannoneer",
-      config: {
-        direction: 1,
-        fireRate: 2400,
-        range: 600,
-        shootUp: true,
-      },
-    },
-    {
-      x: 4350,
-      y: 1100,
-      type: "cannoneer",
-      config: {
-        direction: 1,
-        fireRate: 1800,
-        range: 600,
-        shootUp: true,
-      },
-    },
+    // REMOVED: The upward shooting cannoneers during descent - they were too hard to avoid
 
-    // SECTION 8: UNDERGROUND DEFENDERS
+    // SECTION 8: UNDERGROUND DEFENDERS (Better spacing)
     {
       x: 5550,
       y: 970,
@@ -216,7 +184,7 @@ const LEVEL_1 = {
       config: {
         platformStart: 5500,
         platformEnd: 5600,
-        speed: 3,
+        speed: 2.5, // Slower
         direction: 1,
       },
     },
@@ -227,22 +195,22 @@ const LEVEL_1 = {
       config: {
         platformStart: 5700,
         platformEnd: 5800,
-        speed: 2.8,
+        speed: 2.3, // Slower
         direction: -1,
       },
     },
     {
-      x: 5950,
-      y: 970,
+      x: 6000, // Moved further right, away from platforms
+      y: 1100, // Ground level
       type: "cannoneer",
       config: {
         direction: -1,
-        fireRate: 2000,
-        range: 400,
+        fireRate: 3000,
+        range: 350,
       },
     },
 
-    // SECTION 10: SPIKE GAUNTLET SUPREME - The real challenge
+    // SECTION 10: SPIKE GAUNTLET SUPREME - Challenging but fair
     {
       x: 7050,
       y: 970,
@@ -250,7 +218,7 @@ const LEVEL_1 = {
       config: {
         platformStart: 7050,
         platformEnd: 7210,
-        speed: 3.2,
+        speed: 2.8, // Reduced speed
         direction: 1,
       },
     },
@@ -261,7 +229,7 @@ const LEVEL_1 = {
       config: {
         platformStart: 7280,
         platformEnd: 7440,
-        speed: 2.9,
+        speed: 2.5, // Reduced speed
         direction: -1,
       },
     },
@@ -272,7 +240,7 @@ const LEVEL_1 = {
       config: {
         platformStart: 7510,
         platformEnd: 7670,
-        speed: 3.5,
+        speed: 3.0, // Reduced speed
         direction: 1,
       },
     },
@@ -283,7 +251,7 @@ const LEVEL_1 = {
       config: {
         platformStart: 7740,
         platformEnd: 7900,
-        speed: 3.1,
+        speed: 2.7, // Reduced speed
         direction: -1,
       },
     },
@@ -294,30 +262,30 @@ const LEVEL_1 = {
       config: {
         platformStart: 7970,
         platformEnd: 8130,
-        speed: 3.3,
+        speed: 2.9, // Reduced speed
         direction: 1,
       },
     },
 
-    // SECTION 11: PRE-BOSS FINAL CHALLENGE
+    // SECTION 11: PRE-BOSS FINAL CHALLENGE (Better positioning)
     {
-      x: 8800,
-      y: 970,
+      x: 8600, // Away from platforms
+      y: 1100, // Ground level
       type: "cannoneer",
       config: {
         direction: -1,
-        fireRate: 1500, // Fast firing
-        range: 600,
+        fireRate: 2500, // Slower
+        range: 400,
       },
     },
     {
-      x: 9000,
+      x: 9000, // On platform but with timing window
       y: 920,
       type: "cannoneer",
       config: {
         direction: 1,
-        fireRate: 1600,
-        range: 500,
+        fireRate: 3000, // Slower
+        range: 350,
       },
     },
     {
@@ -327,7 +295,7 @@ const LEVEL_1 = {
       config: {
         platformStart: 9150,
         platformEnd: 9250,
-        speed: 4, // Fastest spike roller
+        speed: 3.2, // Manageable speed
         direction: -1,
       },
     },
@@ -338,14 +306,14 @@ const LEVEL_1 = {
       y: 1000,
       type: "ironGiant",
       config: {
-        health: 5, // Increased health for enhanced difficulty
-        patrolDistance: 800, // Larger patrol area
-        attackRate: 1200, // Faster attacks
+        health: 5,
+        patrolDistance: 800,
+        attackRate: 1200,
         isBoss: true,
       },
     },
 
-    // SECTION 13: BOSS ARENA MINIONS (Spawn during boss fight)
+    // SECTION 13: BOSS ARENA MINIONS (Positioned at edges)
     {
       x: 10200,
       y: 1020,
